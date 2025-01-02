@@ -21,7 +21,7 @@ const Navigation = ({ user }: { user: UserType }) => {
           {/* Logo Section */}
           <div className="flex-1">
             <Link href="/" className="btn btn-ghost text-xl">
-              AppLogo
+              ReparaTech
             </Link>
           </div>
 
