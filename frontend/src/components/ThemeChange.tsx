@@ -1,50 +1,90 @@
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { themeChange } from 'theme-change'
 
 const ThemeChange: React.FC = () => {
-  const themes = ['default', 'retro', 'cyberpunk', 'valentine', 'aqua']
-  const [currentTheme, setCurrentTheme] = useState<string>(
-    localStorage.getItem('theme') || 'default',
-  )
+  const themes = [
+    // cek ./tailwind.config.ts di line 81 untuk contoh penerapannya
+    'contoh_tema_kustom',
+    'light',
+    'dark',
+    'cupcake',
+    'bumblebee',
+    'emerald',
+    'corporate',
+    'synthwave',
+    'retro',
+    'cyberpunk',
+    'valentine',
+    'halloween',
+    'garden',
+    'forest',
+    'aqua',
+    'lofi',
+    'pastel',
+    'fantasy',
+    'wireframe',
+    'black',
+    'luxury',
+    'dracula',
+    'cmyk',
+    'autumn',
+    'business',
+    'acid',
+    'lemonade',
+    'night',
+    'coffee',
+    'winter',
+    'dim',
+    'nord',
+    'sunset',
+  ]
 
-  useEffect(() => {
-    themeChange(false)
-    document.documentElement.setAttribute('data-theme', currentTheme)
-  }, [currentTheme])
+  const [currentTheme, setCurrentTheme] = useState<string>('default')
+
+  useLayoutEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme') || 'default'
+      setCurrentTheme(savedTheme)
+      document.documentElement.setAttribute('data-theme', savedTheme)
+      themeChange(false)
+    }
+  }, [])
 
   const handleThemeChange = (theme: string) => {
     setCurrentTheme(theme)
-    localStorage.setItem('theme', theme)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', theme)
+      document.documentElement.setAttribute('data-theme', theme)
+    }
   }
 
   return (
-    <div className="dropdown dropdown-end">
-      <label
-        tabIndex={0}
-        className="btn btn-ghost flex items-center gap-2"
-        aria-label="Theme Selector">
-        Theme
-        <svg
-          width="12px"
-          height="12px"
-          className="h-2 w-2 fill-current opacity-60"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 2048 2048">
-          <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z" />
-        </svg>
-      </label>
+    <div className="dropdown dropdown-end dropdown-bottom">
+      <div tabIndex={0} role="button" className="btn btn-ghost">
+        <div className="flex items-center space-x-2">
+          <p>Theme</p>
+          <svg
+            width="12px"
+            height="12px"
+            className="inline-block fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 2048 2048">
+            <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+          </svg>
+        </div>
+      </div>
       <ul
         tabIndex={0}
-        className="dropdown-content menu bg-base-200 rounded-box z-10 w-48 p-2 shadow-lg">
-        {themes.map(theme => (
-          <li key={theme}>
+        className="dropdown-content z-[1] max-h-60 w-52 overflow-y-auto rounded-box bg-base-300 p-2 shadow-2xl flex flex-col">
+        {themes.map(themeOption => (
+          <li key={themeOption}>
             <button
-              onClick={() => handleThemeChange(theme)}
-              className={`btn btn-sm btn-ghost w-full justify-start ${
-                currentTheme === theme ? 'font-bold text-primary' : ''
+              onClick={() => handleThemeChange(themeOption)}
+              className={`btn btn-ghost btn-sm btn-block justify-start ${
+                currentTheme === themeOption ? 'font-bold text-primary' : ''
               }`}
-              aria-label={`Set theme to ${theme}`}>
-              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+              aria-label={`Set theme to ${themeOption}`}>
+              {themeOption.charAt(0).toUpperCase() + themeOption.slice(1)}
             </button>
           </li>
         ))}

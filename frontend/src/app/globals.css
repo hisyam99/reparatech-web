@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Kode dari shadcn/ui dibawah ini saya comment out agar menggunakan theming dari daisyui */
 /* @layer base {
   :root {
     --background: 0 0% 100%;
