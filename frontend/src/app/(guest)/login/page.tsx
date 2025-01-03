@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
 import AuthSessionStatus from '@/components/AuthSessionStatus'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,19 +32,22 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-const LoginPage = () => {
+const SearchParamsWrapper = ({ setStatus }: { setStatus: (status: string) => void }) => {
   const searchParams = useSearchParams()
+  useEffect(() => {
+    const resetToken = searchParams.get('reset')
+    setStatus(resetToken ? atob(resetToken) : '')
+  }, [searchParams, setStatus])
+  return null
+}
+
+const LoginPage = () => {
   const [status, setStatus] = useState<string>('')
 
   const { login } = useAuth({
     middleware: 'guest',
     redirectIfAuthenticated: '/dashboard',
   })
-
-  useEffect(() => {
-    const resetToken = searchParams.get('reset')
-    setStatus(resetToken ? atob(resetToken) : '')
-  }, [searchParams])
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -83,6 +86,10 @@ const LoginPage = () => {
           </Link>
         </CardHeader>
         <CardContent>
+          <Suspense fallback={<div>Loading...</div>}>
+            <SearchParamsWrapper setStatus={setStatus} />
+          </Suspense>
+
           <AuthSessionStatus className="mb-4" status={status} />
 
           <Form {...form}>

@@ -1,0 +1,58 @@
+// ngga jadi kepake :0
+
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+// Function to check user role using Laravel Breeze API
+async function getUserRole(laravelSession: string | undefined, xsrfToken: string | undefined): Promise<string | null> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user`,
+      {
+        headers: {
+          Cookie: `laravel_session=${laravelSession}; XSRF-TOKEN=${xsrfToken}`,
+          'X-XSRF-TOKEN': xsrfToken || '',
+          Accept: 'application/json',
+        },
+        credentials: 'include',
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const userData = await response.json();
+    return userData.role || null;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Get Laravel session cookie
+  const laravelSession = request.cookies.get('laravel_session')?.value;
+  const xsrfToken = request.cookies.get('XSRF-TOKEN')?.value;
+
+  // Check if accessing admin routes
+  if (pathname.startsWith('/admin')) {
+    if (!laravelSession) {
+      return NextResponse.redirect(new URL('/unauthorized', request.url));
+    }
+
+    const userRole = await getUserRole(laravelSession, xsrfToken);
+
+    if (userRole !== 'admin') {
+      return NextResponse.redirect(new URL('/unauthorized', request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+// Configure middleware matchers
+export const config = {
+  matcher: '/admin/:path*',
+};

@@ -1,6 +1,7 @@
+// File: /frontend/src/hooks/auth.ts
 import useSWR from 'swr'
 import axios from '@/lib/axios'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AxiosResponse } from 'axios'
 import { useRouter, useParams } from 'next/navigation'
 
@@ -13,18 +14,25 @@ export const useAuth = ({
 }) => {
   const router = useRouter()
   const params = useParams()
+  const [isLoading, setIsLoading] = useState(true)
 
   const {
     data: user,
     error,
     mutate,
+    isLoading: isSWRLoading,
   } = useSWR('/api/user', () =>
     axios
       .get('/api/user')
-      .then(res => res.data)
+      .then(res => {
+        const userData = res.data
+        return {
+          ...userData,
+          role: userData.role || 'user',
+        }
+      })
       .catch(error => {
         if (error.response.status !== 409) throw error
-
         router.push('/verify-email')
       }),
   )
@@ -39,7 +47,6 @@ export const useAuth = ({
   }) => {
     try {
       await csrf()
-
       await axios.post('/register', data)
       mutate()
     } catch (error) {
@@ -79,12 +86,10 @@ export const useAuth = ({
   }) => {
     try {
       await csrf()
-
       const response = await axios.post('/reset-password', {
         ...data,
         token: params.token,
       })
-
       router.push('/login?reset=' + btoa(response.data.status))
     } catch (error) {
       throw error
@@ -103,24 +108,51 @@ export const useAuth = ({
     if (!error) {
       await axios.post('/logout').then(() => mutate())
     }
-
     window.location.pathname = '/login'
   }
 
-  useEffect(() => {
-    if (middleware === 'guest' && redirectIfAuthenticated && user) {
-      router.push(redirectIfAuthenticated)
-    }
+  const hasRole = (role: string): boolean => {
+    return user?.role === role
+  }
 
-    if (
-      window.location.pathname === '/verify-email' &&
-      user?.email_verified_at &&
-      redirectIfAuthenticated
-    ) {
-      router.push(redirectIfAuthenticated)
+  const isAdminRoute = (): boolean => {
+    return window.location.pathname.startsWith('/admin')
+  }
+
+  useEffect(() => {
+    if (!isSWRLoading) {
+      if (middleware === 'guest' && redirectIfAuthenticated && user) {
+        router.push(redirectIfAuthenticated)
+        return
+      }
+
+      if (
+        window.location.pathname === '/verify-email' &&
+        user?.email_verified_at &&
+        redirectIfAuthenticated
+      ) {
+        router.push(redirectIfAuthenticated)
+        return
+      }
+
+      if (middleware === 'auth' && error) {
+        logout()
+        return
+      }
+
+      if (
+        middleware === 'auth' &&
+        user &&
+        isAdminRoute() &&
+        !hasRole('admin')
+      ) {
+        router.push('/unauthorized')
+        return
+      }
+
+      setIsLoading(false)
     }
-    if (middleware === 'auth' && error) logout()
-  }, [user, error, middleware, redirectIfAuthenticated])
+  }, [user, error, middleware, redirectIfAuthenticated, isSWRLoading])
 
   return {
     user,
@@ -130,5 +162,6 @@ export const useAuth = ({
     resetPassword,
     resendEmailVerification,
     logout,
+    isLoading,
   }
 }
