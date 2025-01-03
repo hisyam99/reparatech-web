@@ -1,7 +1,5 @@
 # ReparaTech
 
-## frontend
-
 ## Dokumentasi
 
 ### Instalasi
@@ -15,6 +13,12 @@
    # Install dependensi
    composer install
 
+   # Salin file konfigurasi
+   cp .env.example .env
+
+   # Generate aplikasi key
+   php artisan key:generate
+
    # Migrasi database
    php artisan migrate
 
@@ -23,13 +27,13 @@
    ```
 
 2. **Siapkan Frontend Next.js**  
-   Clone repositori ini, masuk ke folder `frontend`, dan instal dependensinya menggunakan `bun install` atau `npm install`. Kemudian, salin file `.env.example` menjadi `.env.local` dan atur URL backendnya:
+   Clone repositori ini, masuk ke folder `frontend`, dan instal dependensinya menggunakan `yarn install` atau `npm install`. Kemudian, salin file `.env.example` menjadi `.env.local` dan atur URL backendnya:
 
    ```bash
    cd frontend
 
    # Instal dependensi
-   bun install
+   bun install ## bun gaming lessgo lebih cepet :0
    # atau
    npm install
 
@@ -42,9 +46,8 @@
 
 3. **Run Web**  
 
-
    ```bash
    bun run dev
    # atau 
    npm run dev
-   ```
+   

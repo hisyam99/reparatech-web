@@ -15,6 +15,12 @@
    # Install dependensi
    composer install
 
+   # Salin file konfigurasi
+   cp .env.example .env
+
+   # Generate aplikasi key
+   php artisan key:generate
+
    # Migrasi database
    php artisan migrate
 
@@ -40,11 +46,11 @@
    NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
    ```
 
-3. **Run Web**  
-
+3. **Run Web**
 
    ```bash
    bun run dev
-   # atau 
+   # atau
    npm run dev
+
    ```
