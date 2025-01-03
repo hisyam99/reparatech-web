@@ -30,12 +30,14 @@ return [
 
     'disks' => [
 
-        'local' => [
-            'driver' => 'local',
-            'root' => storage_path('app/private'),
-            'serve' => true,
-            'throw' => false,
-        ],
+        // sengaja saya comment out agar data yang menggunakan storage tersimpan ke public, bukan private. jadi bisa diakses
+
+        // 'local' => [
+        //     'driver' => 'local',
+        //     'root' => storage_path('app/private'),
+        //     'serve' => true,
+        //     'throw' => false,
+        // ],
 
         'public' => [
             'driver' => 'local',
