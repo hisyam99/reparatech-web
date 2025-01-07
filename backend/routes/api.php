@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\data_pelangganController;
-use App\Http\Controllers\service_requestsController;
+use App\Http\Controllers\Data_pelangganController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\Service_requestsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,10 @@ Route::middleware(['auth:sanctum', 'role:admin'])->apiResource(
     App\Http\Controllers\Test\TestController::class
 );
 
-Route::resource('data_pelanggan', data_pelangganController::class);
-Route::resource('service_requests', service_requestsController::class);
+Route::resource('data_pelanggan', Data_pelangganController::class);
+Route::resource('service_requests', Service_requestsController::class);
+Route::resource('payments', PaymentsController::class);
 
-Route::put('service_requests/{id}/cancel', [service_requestsController::class, 'cancel']);
+
+Route::put('service_requests/{id}/cancel', [Service_requestsController::class, 'cancel']);
+Route::put('service_requests/{id}/complete', [Service_requestsController::class, 'completeServiceRequest']);

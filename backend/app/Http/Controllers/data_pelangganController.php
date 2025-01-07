@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\data_pelanggan;
 use Illuminate\Http\Request;
 
-class data_pelangganController extends Controller
+class Data_pelangganController extends Controller
 {
     // Menampilkan semua data pelanggan
     public function index()

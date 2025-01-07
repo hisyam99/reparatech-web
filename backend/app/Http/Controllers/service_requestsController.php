@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\service_requests;
 use Illuminate\Http\Request;
 
-class service_requestsController extends Controller
+class Service_requestsController extends Controller
 {
     // Menampilkan semua permintaan layanan
     public function index()
@@ -71,6 +71,22 @@ class service_requestsController extends Controller
             'data' => $serviceRequest,
         ]);
     }
+
+
+    // Mengubah status service request menjadi 'completed'
+    public function completeServiceRequest($id)
+    {
+        $serviceRequest = service_requests::find($id);
+        if (!$serviceRequest) {
+            return response()->json(['message' => 'Service request not found.'], 404);
+        }
+
+        // Update status menjadi 'completed'
+        $serviceRequest->update(['request_status' => 'completed']);
+
+        return response()->json(['message' => 'Service request marked as completed.']);
+    }
+
 
     // Membatalkan permintaan layanan
     public function cancel($id)
