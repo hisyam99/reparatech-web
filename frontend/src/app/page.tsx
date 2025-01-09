@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Head from 'next/head'
 import Link from 'next/link'
@@ -7,9 +7,7 @@ import ThemeChange from '@/components/ThemeChange'
 import Navbar from '@/components/Navbar'
 import LandingPage from '@/components/home/Landing_page'
 
-
 export default function Home() {
-  const { user } = useAuth({ middleware: 'guest' })
 
   return (
     <>
