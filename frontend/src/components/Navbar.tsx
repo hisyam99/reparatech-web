@@ -19,7 +19,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="#" className="text-black hover:text-blue-500">
+          <Link href="/PesanJasa" className="text-black hover:text-blue-500">
             Layanan
           </Link>
         </li>
@@ -31,11 +31,6 @@ const Navbar = () => {
         <li>
           <Link href="#" className="text-black hover:text-blue-500">
             Kontak
-          </Link>
-        </li>
-        <li>
-          <Link href="#" className="text-black hover:text-blue-500">
-            Pembayaran
           </Link>
         </li>
       </ul>
