@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LandingPage: React.FC = () => {
+const LandingPage = () => {
   return (
     <div className="font-sans leading-relaxed">
       {/* Section 1: Header */}
