@@ -33,6 +33,11 @@ const Navbar = () => {
             Kontak
           </Link>
         </li>
+        {/* <li>
+          <Link href="/Payment" className="text-black hover:text-blue-500">
+            Pembayaran
+          </Link>
+        </li> */}
       </ul>
       <div className="flex space-x-4">
         {user ? (
