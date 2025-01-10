@@ -2,10 +2,13 @@
 
 import Navbar from '@/components/Navbar'
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function PesanJasaPage() {
   const [jenisPengiriman, setJenisPengiriman] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const router = useRouter()
 
   const handlePengirimanChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
@@ -20,6 +23,9 @@ export default function PesanJasaPage() {
 
   const closeModal = () => {
     setIsModalOpen(false)
+  }
+  const goToPayment = () => {
+    router.push('/Payment')
   }
 
   return (
@@ -164,8 +170,9 @@ export default function PesanJasaPage() {
               Terima kasih atas kepercayaan Anda kepada ReparaTech.
             </p>
             <div className="flex justify-center">
+              {/* Remove the anchor tag <a> and wrap the button directly with <Link> */}
               <button
-                onClick={closeModal}
+                onClick={goToPayment}
                 className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none">
                 Pembayaran
               </button>
