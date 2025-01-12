@@ -1,35 +1,31 @@
 // src/app/page.tsx
 
-import './globals.css';
-
 export const metadata = {
   title: 'ReparaTech Dashboard',
   description: 'Admin dashboard for ReparaTech',
 };
 
-export default function Page() {
+export default function DashboardComponentAdmin() {
   return (
-    <html lang="en">
-      <body className="flex h-screen bg-gray-100">
-        {/* Sidebar */}
-        <aside className="w-64 bg-blue-100 p-4 shadow-md">
-          <h1 className="text-2xl font-bold mb-6 text-black">ReparaTech</h1>
+    <div>
+        <aside className="w-64 p-4 shadow-md">
+          <h1 className="text-2xl font-bold mb-6">ReparaTech</h1>
           <nav>
             <ul>
               <li className="mb-4">
-                <a href="#" className="block p-2 text-black hover:bg-[#1e88e5] rounded hover:text-white">Dashboard</a>
+                <a href="#" className="block p-2 rounded hover:bg-secondary">Dashboard</a>
               </li>
               <li className="mb-4">
-                <a href="#" className="block p-2 text-black hover:bg-[#1e88e5] rounded hover:text-white">Manage Services</a>
+                <a href="#" className="block p-2 rounded hover:bg-secondary">Manage Services</a>
               </li>
               <li className="mb-4">
-                <a href="/booking-management/page" className="block p-2 text-black hover:bg-[#1e88e5] rounded hover:text-white">Booking Management</a>
+                <a href="/booking-management/page" className="block p-2 rounded hover:bg-secondary">Booking Management</a>
               </li>
               <li className="mb-4">
-                <a href="#" className="block p-2 text-black hover:bg-[#1e88e5] rounded hover:text-white">Customer Management</a>
+                <a href="#" className="block p-2 rounded hover:bg-secondary ">Customer Management</a>
               </li>
               <li>
-                <a href="#" className="block p-2 text-black hover:bg-[#1e88e5] rounded hover:text-white">Testimonials Management</a>
+                <a href="#" className="block p-2 rounded hover:bg-secondary">Testimonials Management</a>
               </li>
             </ul>
           </nav>
@@ -55,7 +51,6 @@ export default function Page() {
             </div>
           </div>
         </main>
-      </body>
-    </html>
+      </div>
   );
 }
