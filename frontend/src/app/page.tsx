@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/auth'
 import ThemeChange from '@/components/ThemeChange'
 import Navbar from '@/components/Navbar'
 import LandingPage from '@/components/home/Landing_page'
+import Footer from '@/components/Footer'
 
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
     <>
     <Navbar />
     <LandingPage />
+    <Footer />
     </>
   )
 }
