@@ -7,20 +7,20 @@ export const metadata = {
 
 export default function DashboardComponentAdmin() {
   return (
-    <div className="flex"> {/* Tambahkan flex di sini */}
+    <div className="flex">
       {/* Sidebar */}
       <aside className="w-64 p-4 shadow-md h-screen">
         <h1 className="text-2xl font-bold mb-6">ReparaTech</h1>
         <nav>
           <ul>
             <li className="mb-4">
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Dashboard</a>
+              <a href="#" className="bg-secondary block p-2 rounded hover:bg-secondary">Dashboard</a>
             </li>
             <li className="mb-4">
               <a href="#" className="block p-2 rounded hover:bg-secondary">Manage Services</a>
             </li>
             <li className="mb-4">
-              <a href="/booking-management/page" className="block p-2 rounded hover:bg-secondary">Booking Management</a>
+              <a href="/admin/booking" className="block p-2 rounded hover:bg-secondary">Booking Management</a>
             </li>
             <li className="mb-4">
               <a href="#" className="block p-2 rounded hover:bg-secondary">Customer Management</a>
