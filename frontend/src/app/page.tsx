@@ -4,6 +4,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import ThemeChange from '@/components/ThemeChange'
+import DashboardPage from './(authenticated)/dashboard/page'
+import Dashboard from '@/components/Layouts/Dashboard'
+
 
 export default function Home() {
   const { user } = useAuth({ middleware: 'guest' })
@@ -39,6 +42,7 @@ export default function Home() {
           </h1>
         </div>
       </div>
+      <Dasboard/>
     </>
   )
 }
