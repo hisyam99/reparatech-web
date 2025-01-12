@@ -9,7 +9,7 @@ const Navbar = () => {
       <div className="text-2xl font-bold text-black">ReparaTech</div>
       <ul className="flex space-x-6 bg-gray-200 p-2 rounded-md">
         <li>
-          <Link href="#" className="text-black hover:text-blue-500">
+          <Link href="/" className="text-black hover:text-blue-500">
             Beranda
           </Link>
         </li>
@@ -19,7 +19,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="#" className="text-black hover:text-blue-500">
+          <Link href="/PesanJasa" className="text-black hover:text-blue-500">
             Layanan
           </Link>
         </li>
