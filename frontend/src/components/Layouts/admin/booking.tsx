@@ -12,19 +12,19 @@ export const metadata = {
         <nav>
           <ul>
             <li className="mb-4">
-              <a href="/admin/dashboard" className="block p-2 rounded hover:bg-secondary">Dashboard</a>
+              <a href="/admin/dashboard" className="block p-2 rounded hover:bg-secondary hover:text-white">Dashboard</a>
             </li>
             <li className="mb-4">
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Manage Services</a>
+              <a href="#" className="block p-2 rounded hover:bg-secondary hover:text-white">Manage Services</a>
             </li>
             <li className="mb-4">
-              <a href="#" className="bg-secondary block p-2 rounded hover:bg-secondary">Booking Management</a>
+              <a href="#" className="bg-secondary block p-2 rounded hover:bg-secondary text-white">Booking Management</a>
             </li>
             <li className="mb-4">
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Customer Management</a>
+              <a href="#" className="block p-2 rounded hover:bg-secondary hover:text-white">Customer Management</a>
             </li>
             <li>
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Testimonials Management</a>
+              <a href="#" className="block p-2 rounded hover:bg-secondary hover:text-white">Testimonials Management</a>
             </li>
           </ul>
         </nav>
@@ -34,7 +34,7 @@ export const metadata = {
           <h2 className="text-2xl font-bold mb-6">Selamat datang, Admin</h2>
   
           <div className="flex justify-end mb-4">
-            <button className="px-4 py-2 rounded hover:bg-secondary">
+            <button className="px-4 py-2 rounded hover:bg-secondary hover:text-white">
               Tambah Pesanan
             </button>
           </div>

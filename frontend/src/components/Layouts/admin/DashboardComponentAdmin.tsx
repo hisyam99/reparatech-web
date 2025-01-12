@@ -14,19 +14,19 @@ export default function DashboardComponentAdmin() {
         <nav>
           <ul>
             <li className="mb-4">
-              <a href="#" className="bg-secondary block p-2 rounded hover:bg-secondary">Dashboard</a>
+              <a href="#" className="bg-secondary text-white block p-2 rounded hover:bg-secondary">Dashboard</a>
             </li>
             <li className="mb-4">
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Manage Services</a>
+              <a href="#" className="block p-2 rounded hover:bg-secondary hover:text-white">Manage Services</a>
             </li>
             <li className="mb-4">
-              <a href="/admin/booking" className="block p-2 rounded hover:bg-secondary">Booking Management</a>
+              <a href="/admin/booking" className="block p-2 rounded hover:bg-secondary hover:text-white">Booking Management</a>
             </li>
             <li className="mb-4">
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Customer Management</a>
+              <a href="#" className="block p-2 rounded hover:bg-secondary hover:text-white">Customer Management</a>
             </li>
             <li>
-              <a href="#" className="block p-2 rounded hover:bg-secondary">Testimonials Management</a>
+              <a href="#" className="block p-2 rounded hover:bg-secondary hover:text-white">Testimonials Management</a>
             </li>
           </ul>
         </nav>
