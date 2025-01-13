@@ -8,25 +8,61 @@ import Link from 'next/link'
 export default function PesanJasaPage() {
   const [jenisPengiriman, setJenisPengiriman] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    nama: '',
+    gambar: null,
+    nomorHp: '',
+    email: '',
+    jenisPengiriman: '',
+    informasiHp: '',
+    alamat: '',
+  })
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const router = useRouter()
 
-  const handlePengirimanChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setJenisPengiriman(event.target.value)
-  }
-
+    const target = event.target;
+    const { name, value, type } = target;
+  
+    if (type === 'file' && target instanceof HTMLInputElement) {
+      setFormData(prevData => ({
+        ...prevData,
+        [name]: target.files?.[0] || null, // Menghindari undefined saat tidak ada file
+      }));
+    } else {
+      setFormData(prevData => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+  
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
-    setIsModalOpen(true)
+    if (validateForm()) {
+      setIsModalOpen(true)
+    }
   }
 
-  const closeModal = () => {
-    setIsModalOpen(false)
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+
+    if (!formData.nama) newErrors.nama = 'Nama wajib diisi'
+    if (!formData.gambar) newErrors.gambar = 'Gambar wajib diunggah'
+    if (!formData.nomorHp) newErrors.nomorHp = 'Nomor HP/WA wajib diisi'
+    if (!formData.email) newErrors.email = 'Email wajib diisi'
+    if (!formData.jenisPengiriman) newErrors.jenisPengiriman = 'Jenis pengiriman wajib dipilih'
+    if (!formData.informasiHp) newErrors.informasiHp = 'Informasi HP wajib diisi'
+    if (!formData.alamat) newErrors.alamat = 'Alamat wajib diisi'
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
-  const goToPayment = () => {
-    router.push('/Payment')
-  }
+
+  const closeModal = () => setIsModalOpen(false)
+  const goToPayment = () => router.push('/Payment')
 
   return (
     <div className="bg-white min-h-screen">
@@ -56,9 +92,13 @@ export default function PesanJasaPage() {
               <label className="block text-black">Nama</label>
               <input
                 type="text"
+                name="nama"
+                value={formData.nama}
+                onChange={handleInputChange}
                 placeholder="Nama Anda"
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
+              {errors.nama && <p className="text-red-500 text-sm">{errors.nama}</p>}
             </div>
 
             {/* Gambar */}
@@ -66,8 +106,11 @@ export default function PesanJasaPage() {
               <label className="block text-gray-700">Gambar</label>
               <input
                 type="file"
+                name="gambar"
+                onChange={handleInputChange}
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
+              {errors.gambar && <p className="text-red-500 text-sm">{errors.gambar}</p>}
             </div>
 
             {/* Nomor HP/WA */}
@@ -75,9 +118,13 @@ export default function PesanJasaPage() {
               <label className="block text-gray-700">Nomor HP/WA</label>
               <input
                 type="text"
+                name="nomorHp"
+                value={formData.nomorHp}
+                onChange={handleInputChange}
                 placeholder="Nomor Anda"
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
+              {errors.nomorHp && <p className="text-red-500 text-sm">{errors.nomorHp}</p>}
             </div>
 
             {/* Email */}
@@ -85,24 +132,31 @@ export default function PesanJasaPage() {
               <label className="block text-gray-700">Email</label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 placeholder="Email Anda"
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
             {/* Jenis Pengiriman */}
             <div>
               <label className="block text-gray-700">Jenis Pengiriman</label>
               <select
-                value={jenisPengiriman}
-                onChange={handlePengirimanChange}
-                className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200">
+                name="jenisPengiriman"
+                value={formData.jenisPengiriman}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+              >
                 <option value="" disabled>
                   Pilih jenis pengiriman
                 </option>
                 <option value="antar-jemput">Layanan Antar Jemput</option>
                 <option value="datang-lokasi">Datang ke Lokasi</option>
               </select>
+              {errors.jenisPengiriman && <p className="text-red-500 text-sm">{errors.jenisPengiriman}</p>}
             </div>
 
             {/* Informasi HP */}
@@ -110,37 +164,45 @@ export default function PesanJasaPage() {
               <label className="block text-gray-700">Informasi HP</label>
               <input
                 type="text"
+                name="informasiHp"
+                value={formData.informasiHp}
+                onChange={handleInputChange}
                 placeholder="Tipe HP dll."
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
+              {errors.informasiHp && <p className="text-red-500 text-sm">{errors.informasiHp}</p>}
             </div>
 
             {/* Alamat */}
             <div>
               <label className="block text-gray-700">Alamat</label>
               <textarea
+                name="alamat"
+                value={formData.alamat}
+                onChange={handleInputChange}
                 placeholder="Alamat Anda"
                 className="w-full px-4 py-5 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
                 style={{ resize: 'none' }}
               />
+              {errors.alamat && <p className="text-red-500 text-sm">{errors.alamat}</p>}
             </div>
 
             {/* Note */}
             <p className="text-sm text-gray-600 mt-4">
-              Note: Setelah melakukan pemesanan, harap periksa secara berkala
-              untuk tagihan akhir. Terima kasih atas kepercayaan Anda kepada
-              ReparaTech.
+              Note: Setelah melakukan pemesanan, harap periksa secara berkala untuk tagihan akhir. Terima kasih atas kepercayaan Anda kepada ReparaTech.
             </p>
 
             {/* Button Submit */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none">
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none"
+            >
               Pesan
             </button>
           </form>
         </div>
       </div>
+
       {/* Modal Pop-up */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
@@ -152,12 +214,9 @@ export default function PesanJasaPage() {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth="2">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M5 13l4 4L19 7"
-                />
+                strokeWidth="2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <h2 className="text-xl font-semibold text-center text-black mb-4">
@@ -170,10 +229,10 @@ export default function PesanJasaPage() {
               Terima kasih atas kepercayaan Anda kepada ReparaTech.
             </p>
             <div className="flex justify-center">
-              {/* Remove the anchor tag <a> and wrap the button directly with <Link> */}
               <button
                 onClick={goToPayment}
-                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none">
+                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none"
+              >
                 Pembayaran
               </button>
             </div>
