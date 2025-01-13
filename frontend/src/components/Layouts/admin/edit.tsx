@@ -8,15 +8,14 @@ export const metadata = {
   export default function EditPesananPage() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // Logika untuk menyimpan perubahan data pesanan
       console.log('Pesanan berhasil diperbarui!');
     };
   
     return (
-      <div className="p-6 bg-gray-50 min-h-screen">
-        <h1 className="text-3xl font-bold mb-6">Edit Pesanan</h1>
+      <div className="p-6 min-h-screen">
   
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6 max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6">Edit Pesanan</h1>
           <div className="mb-4">
             <label htmlFor="user" className="block text-gray-700 font-medium mb-2">
               User
