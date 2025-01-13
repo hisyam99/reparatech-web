@@ -1,5 +1,3 @@
-
-
 import EditPesananPage from '@/components/Layouts/admin/edit'
 import React from 'react'
 
@@ -12,5 +10,4 @@ const EditPesananPageAdmin = () => {
     </div>
   )
 }
-
 export default EditPesananPageAdmin

@@ -1,3 +1,5 @@
+"use client";
+
 export const metadata = {
     title: 'Edit Pesanan - ReparaTech',
     description: 'Halaman untuk mengedit informasi pesanan di ReparaTech',
