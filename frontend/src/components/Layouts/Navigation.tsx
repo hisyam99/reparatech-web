@@ -1,4 +1,6 @@
-"use client"
+// File 1: /frontend/src/components/Layouts/Navigation.tsx
+
+'use client'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -11,7 +13,6 @@ import ThemeChange from '../ThemeChange'
 const Navigation = () => {
   const pathname = usePathname()
   const { user } = useAuth({ middleware: 'guest' })
-
   const { logout } = useAuth({})
 
   return (
@@ -59,6 +60,16 @@ const Navigation = () => {
                       Dashboard
                     </Link>
                   </li>
+                  {/* Admin Panel link for admin users */}
+                  {user.role === 'admin' && (
+                    <li>
+                      <Link
+                        href="/admin"
+                        className={pathname === '/admin' ? 'active' : ''}>
+                        Admin Panel
+                      </Link>
+                    </li>
+                  )}
                 </ul>
                 <div className="dropdown dropdown-end">
                   <label

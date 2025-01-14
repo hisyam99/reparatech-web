@@ -11,6 +11,9 @@ export function middleware(request: NextRequest) {
   } else if (url.pathname === '/admin/services') {
     url.pathname = '/admin/services/manage'
     return NextResponse.redirect(url)
+  } else if (url.pathname === '/dashboard') {
+    url.pathname = '/services'
+    return NextResponse.redirect(url)
   }
 
   return NextResponse.next()
