@@ -35,7 +35,7 @@ const Navigation = () => {
                 <Link href="/fitur">Fitur</Link>
               </li>
               <li>
-                <Link href="/layanan">Layanan</Link>
+                <Link href="/PesanJasa">Layanan</Link>
               </li>
               <li>
                 <Link href="/testimoni">Testimoni</Link>
