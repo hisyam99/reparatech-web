@@ -5,6 +5,7 @@ use App\Http\Controllers\Data_pelangganController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\Service_requestsController;
+use App\Http\Controllers\ServiceOrder\ServiceOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Rute jasa servis
     Route::get('/services', [ServiceController::class, 'index']);
     Route::get('/services/{id}', [ServiceController::class, 'show']);
+
+    // service-order
+    Route::get('/service-orders', [ServiceOrderController::class, 'index']);
+    Route::get('/service-orders/{id}', [ServiceOrderController::class, 'show']);
+    Route::post('/service-orders', [ServiceOrderController::class, 'store']);
+    Route::get('/user/service-orders', [ServiceOrderController::class, 'getUserOrders']);
 });
 
 // Route untuk operasi Create, Update, dan Delete hanya bisa diakses oleh admin
@@ -44,6 +51,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/services', [ServiceController::class, 'store']);
     Route::put('/services/{id}', [ServiceController::class, 'update']);
     Route::delete('/services/{id}', [ServiceController::class, 'destroy']);
+
+    //service-order
+    Route::put('/service-orders/{id}/status', [ServiceOrderController::class, 'updateStatus']);
 });
 
 Route::resource('data_pelanggan', Data_pelangganController::class);
