@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Data_pelangganController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\Service\ServiceController;
 use App\Http\Controllers\Service_requestsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +19,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/test', [App\Http\Controllers\Test\TestController::class, 'index']);
     Route::get('/test/{id}', [App\Http\Controllers\Test\TestController::class, 'show']);
+
+    // kategori
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/categories/{id}', [CategoryController::class, 'show']);
+
+    // Rute jasa servis
+    Route::get('/services', [ServiceController::class, 'index']);
+    Route::get('/services/{id}', [ServiceController::class, 'show']);
 });
 
 // Route untuk operasi Create, Update, dan Delete hanya bisa diakses oleh admin
@@ -24,6 +34,16 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/test', [App\Http\Controllers\Test\TestController::class, 'store']);
     Route::put('/test/{id}', [App\Http\Controllers\Test\TestController::class, 'update']);
     Route::delete('/test/{id}', [App\Http\Controllers\Test\TestController::class, 'destroy']);
+
+    // kategori
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+    // Rute Jasa Servis
+    Route::post('/services', [ServiceController::class, 'store']);
+    Route::put('/services/{id}', [ServiceController::class, 'update']);
+    Route::delete('/services/{id}', [ServiceController::class, 'destroy']);
 });
 
 Route::resource('data_pelanggan', Data_pelangganController::class);
