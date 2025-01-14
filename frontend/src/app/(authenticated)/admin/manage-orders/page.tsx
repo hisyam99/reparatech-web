@@ -14,7 +14,7 @@ interface CustomError extends Error {
   }
 }
 
-export default function ServiceOrderPage() {
+export default function ManageOrderPage() {
   const {
     orderData,
     isLoading,
@@ -70,13 +70,24 @@ export default function ServiceOrderPage() {
     <div className="p-4 space-y-6">
       <Toaster position="top-right" />
 
-      <ServiceOrderForm
-        formData={formData}
-        onSubmit={handleSubmit}
-        onInputChange={handleInputChange}
-        services={servicesData?.data.data ?? []}
-        isLoading={createMutation.isPending}
-      />
+      <div className="card bg-base-200 shadow-xl">
+        <div className="card-body">
+          <h2 className="card-title">Service Orders</h2>
+          <ServiceOrderList
+            orders={orderData?.data.data ?? []}
+            onUpdateStatus={handleUpdateStatus}
+            isLoading={isLoading}
+            isAdmin={true}
+          />
+        </div>
+      </div>
+
+      {orderData && (
+        <div className="text-sm opacity-50">
+          Total Orders: {orderData.data.total} | Page:{' '}
+          {orderData.data.current_page} | Per Page: {orderData.data.per_page}
+        </div>
+      )}
     </div>
   )
 }
