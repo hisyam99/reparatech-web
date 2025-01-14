@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Footer = () => {
   return (
@@ -9,7 +9,8 @@ const Footer = () => {
           <div>
             <h3 className="text-3xl font-extrabold mb-4">ReparaTech</h3>
             <p className="text-sm text-gray-600">
-              Solusi terpercaya untuk perbaikan gadget Anda dengan teknisi profesional dan garansi layanan.
+              Solusi terpercaya untuk perbaikan gadget Anda dengan teknisi
+              profesional dan garansi layanan.
             </p>
           </div>
 
@@ -19,22 +20,22 @@ const Footer = () => {
             <ul className="text-sm text-gray-600 space-y-2">
               <li>
                 <a href="#service-smartphone" className="hover:underline">
-                   Service Smartphone
+                  Service Smartphone
                 </a>
               </li>
               <li>
                 <a href="#service-laptop" className="hover:underline">
-                   Service Laptop
+                  Service Laptop
                 </a>
               </li>
               <li>
                 <a href="#service-tablet" className="hover:underline">
-                   Service Tablet
+                  Service Tablet
                 </a>
               </li>
               <li>
                 <a href="#service-aksesoris" className="hover:underline">
-                   Service Aksesoris
+                  Service Aksesoris
                 </a>
               </li>
             </ul>
@@ -51,17 +52,17 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#karir" className="hover:underline">
-                 Karir
+                  Karir
                 </a>
               </li>
               <li>
                 <a href="#blog" className="hover:underline">
-                Blog
+                  Blog
                 </a>
               </li>
               <li>
                 <a href="#faq" className="hover:underline">
-                 FAQ
+                  FAQ
                 </a>
               </li>
             </ul>
@@ -73,12 +74,12 @@ const Footer = () => {
             <ul className="text-sm text-gray-600 space-y-2">
               <li>
                 <a href="#syarat-ketentuan" className="hover:underline">
-                 Syarat & Ketentuan
+                  Syarat & Ketentuan
                 </a>
               </li>
               <li>
                 <a href="#kebijakan-privasi" className="hover:underline">
-                   Kebijakan Privasi
+                  Kebijakan Privasi
                 </a>
               </li>
               <li>
@@ -96,12 +97,12 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="text-center text-gray-600 text-sm mt-8 border-t pt-4">
+        <div className="text-center text-gray-600 text-sm mt-8 border-t pt-4 bg-white py-4">
           © 2024 ReparaTech. All rights reserved.
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
