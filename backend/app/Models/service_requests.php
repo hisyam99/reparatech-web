@@ -27,9 +27,4 @@ class service_requests extends Model
         return $this->hasMany(payments::class, 'service_request_id');
     }
 
-    public function customer()
-    {
-        return $this->belongsTo(data_pelanggan::class, 'customer_id');
-    }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Data_pelangganController;
+use App\Http\Controllers\DataPelangganController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Service_requestsController;
 use Illuminate\Http\Request;
@@ -26,7 +26,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::delete('/test/{id}', [App\Http\Controllers\Test\TestController::class, 'destroy']);
 });
 
-Route::resource('data_pelanggan', Data_pelangganController::class);
+Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
+    Route::post('/data_pelanggan', [DataPelangganController::class, 'store']);
+});
 Route::resource('service_requests', Service_requestsController::class);
 Route::resource('payments', PaymentsController::class);
 

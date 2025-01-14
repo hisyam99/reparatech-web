@@ -1,68 +1,114 @@
 'use client'
 
-import Navbar from '@/components/Navbar'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import Navbar from '@/components/Navbar';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from '@/lib/axios';  // Pastikan mengimpor axios yang telah dikonfigurasi
 
 export default function PesanJasaPage() {
-  const [jenisPengiriman, setJenisPengiriman] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [role, setRole] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     nama: '',
-    gambar: null,
+    gambar: null as File | null,
     nomorHp: '',
     email: '',
     jenisPengiriman: '',
-    informasiHp: '',
+    informasi: '',
     alamat: '',
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const router = useRouter()
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  // Mendapatkan instance router dari Next.js
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await axios.get('/api/user'); // Ganti dengan endpoint yang benar
+        if (response.data && response.data.role) {
+          setRole(response.data.role);
+        } else {
+          setRole(null);  
+        }
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+
+    fetchUserRole();
+  }, []);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const target = event.target;
     const { name, value, type } = target;
-  
+
     if (type === 'file' && target instanceof HTMLInputElement) {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
-        [name]: target.files?.[0] || null, // Menghindari undefined saat tidak ada file
+        [name]: target.files ? target.files[0] : null,
       }));
     } else {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
   };
-  
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    if (validateForm()) {
-      setIsModalOpen(true)
-    }
-  }
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
+    if (!formData.nama) newErrors.nama = 'Nama wajib diisi';
+    if (!formData.gambar) newErrors.gambar = 'Gambar wajib diunggah';
+    if (!formData.nomorHp) newErrors.nomorHp = 'Nomor HP/WA wajib diisi';
+    if (!formData.email) newErrors.email = 'Email wajib diisi';
+    if (!formData.jenisPengiriman) newErrors.jenisPengiriman = 'Jenis pengiriman wajib dipilih';
+    if (!formData.informasi) newErrors.informasi = 'Informasi wajib diisi';
+    if (!formData.alamat) newErrors.alamat = 'Alamat wajib diisi';
 
-    if (!formData.nama) newErrors.nama = 'Nama wajib diisi'
-    if (!formData.gambar) newErrors.gambar = 'Gambar wajib diunggah'
-    if (!formData.nomorHp) newErrors.nomorHp = 'Nomor HP/WA wajib diisi'
-    if (!formData.email) newErrors.email = 'Email wajib diisi'
-    if (!formData.jenisPengiriman) newErrors.jenisPengiriman = 'Jenis pengiriman wajib dipilih'
-    if (!formData.informasiHp) newErrors.informasiHp = 'Informasi HP wajib diisi'
-    if (!formData.alamat) newErrors.alamat = 'Alamat wajib diisi'
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+  
+    if (validateForm()) {
+      try {
+        const formPayload = new FormData();
+        formPayload.append('nama', formData.nama);
+        if (formData.gambar) {
+          formPayload.append('gambar', formData.gambar);
+        }
+        formPayload.append('nomorHp', formData.nomorHp);
+        formPayload.append('email', formData.email);
+        formPayload.append('jenisPengiriman', formData.jenisPengiriman);
+        formPayload.append('informasi', formData.informasi);
+        formPayload.append('alamat', formData.alamat);
+  
+        // Tidak perlu menambahkan csrfToken secara manual karena axios sudah menangani CSRF token
+        const response = await axios.post('http://localhost:8000/api/data_pelanggan', formPayload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        if (response.status === 200) {
+          setIsModalOpen(true);
+        } else {
+          alert('Terjadi kesalahan saat mengirim data.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Gagal mengirim data. Silakan coba lagi.');
+      }
+    }
+  };
 
-  const closeModal = () => setIsModalOpen(false)
-  const goToPayment = () => router.push('/Payment')
+  const closeModal = () => setIsModalOpen(false);
+
+  // Fungsi navigasi menuju halaman pembayaran
+  const goToPayment = () => router.push('/Payment'); 
 
   return (
     <div className="bg-white min-h-screen">
@@ -70,6 +116,7 @@ export default function PesanJasaPage() {
       <div className="flex justify-center items-center mt-10">
         <div className="w-full max-w-lg p-6 bg-white shadow-xl rounded-lg">
           <h1 className="text-2xl font-bold mb-6 text-black">Pesan Jasa</h1>
+
           <div className="flex items-start space-x-6 mb-8">
             <img
               src="/path-to-your-image.jpg"
@@ -159,18 +206,18 @@ export default function PesanJasaPage() {
               {errors.jenisPengiriman && <p className="text-red-500 text-sm">{errors.jenisPengiriman}</p>}
             </div>
 
-            {/* Informasi HP */}
+            {/* Informasi */}
             <div>
-              <label className="block text-gray-700">Informasi HP</label>
+              <label className="block text-gray-700">Informasi</label>
               <input
                 type="text"
-                name="informasiHp"
-                value={formData.informasiHp}
+                name="informasi"
+                value={formData.informasi}
                 onChange={handleInputChange}
                 placeholder="Tipe HP dll."
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
-              {errors.informasiHp && <p className="text-red-500 text-sm">{errors.informasiHp}</p>}
+              {errors.informasi && <p className="text-red-500 text-sm">{errors.informasi}</p>}
             </div>
 
             {/* Alamat */}
@@ -180,65 +227,40 @@ export default function PesanJasaPage() {
                 name="alamat"
                 value={formData.alamat}
                 onChange={handleInputChange}
-                placeholder="Alamat Anda"
-                className="w-full px-4 py-5 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                style={{ resize: 'none' }}
+                placeholder="Alamat lengkap Anda"
+                className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
               {errors.alamat && <p className="text-red-500 text-sm">{errors.alamat}</p>}
             </div>
 
-            {/* Note */}
-            <p className="text-sm text-gray-600 mt-4">
-              Note: Setelah melakukan pemesanan, harap periksa secara berkala untuk tagihan akhir. Terima kasih atas kepercayaan Anda kepada ReparaTech.
-            </p>
-
-            {/* Button Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none"
+              className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600"
             >
-              Pesan
+              Kirim Pesanan
             </button>
           </form>
         </div>
       </div>
 
-      {/* Modal Pop-up */}
+      {/* Modal Confirmation */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-80 shadow-lg">
-            <div className="flex justify-center mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-12 h-12 text-green-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-semibold text-center text-black mb-4">
-              Pesanan Anda telah berhasil dibuat!
-            </h2>
-            <p className="text-center text-gray-700 mb-4">
-              Mohon cek menu Pembayaran untuk melihat detail tagihan Anda.
-            </p>
-            <p className="text-center text-gray-700 mb-6">
-              Terima kasih atas kepercayaan Anda kepada ReparaTech.
-            </p>
-            <div className="flex justify-center">
-              <button
-                onClick={goToPayment}
-                className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none"
-              >
-                Pembayaran
-              </button>
-            </div>
+        <div
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center"
+          onClick={closeModal}
+        >
+          <div className="bg-white p-8 rounded-md shadow-lg text-center">
+            <h2 className="text-xl font-semibold">Pesanan Anda Telah Dikirim</h2>
+            <button
+              onClick={goToPayment}
+              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            >
+              Lanjutkan ke Pembayaran
+            </button>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
