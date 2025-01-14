@@ -1,6 +1,5 @@
 'use client'
 
-import Navbar from '@/components/Navbar'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -66,7 +65,6 @@ export default function PesanJasaPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar />
       <div className="flex justify-center items-center mt-10">
         <div className="w-full max-w-lg p-6 bg-white shadow-xl rounded-lg">
           <h1 className="text-2xl font-bold mb-6 text-black">Pesan Jasa</h1>

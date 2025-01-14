@@ -1,103 +1,74 @@
 import React from 'react'
 
 const Footer = () => {
+  const footerSections = [
+    {
+      title: 'Layanan',
+      items: [
+        { href: '#service-smartphone', text: 'Service Smartphone' },
+        { href: '#service-laptop', text: 'Service Laptop' },
+        { href: '#service-tablet', text: 'Service Tablet' },
+        { href: '#service-aksesoris', text: 'Service Aksesoris' },
+      ],
+    },
+    {
+      title: 'Perusahaan',
+      items: [
+        { href: '#tentang-kami', text: 'Tentang Kami' },
+        { href: '#karir', text: 'Karir' },
+        { href: '#blog', text: 'Blog' },
+        { href: '#faq', text: 'FAQ' },
+      ],
+    },
+    {
+      title: 'Support',
+      items: [
+        { href: '#syarat-ketentuan', text: 'Syarat & Ketentuan' },
+        { href: '#kebijakan-privasi', text: 'Kebijakan Privasi' },
+        { href: '#bantuan', text: 'Bantuan' },
+        { href: '#kontak', text: 'Kontak' },
+      ],
+    },
+  ]
+
   return (
-    <footer className="bg-[#DDEDF4] py-8 text-black">
+    <footer className="bg-accent/10 py-8">
       <div className="max-w-[1200px] mx-auto px-5">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Kolom 1: ReparaTech */}
           <div>
-            <h3 className="text-3xl font-extrabold mb-4">ReparaTech</h3>
-            <p className="text-sm text-gray-600">
+            <h3 className="text-3xl font-extrabold mb-4 text-base-content">
+              ReparaTech
+            </h3>
+            <p className="text-sm text-base-content/70">
               Solusi terpercaya untuk perbaikan gadget Anda dengan teknisi
               profesional dan garansi layanan.
             </p>
           </div>
 
-          {/* Kolom 2: Layanan */}
-          <div>
-            <h3 className="text-lg font-bold mb-4">Layanan</h3>
-            <ul className="text-sm text-gray-600 space-y-2">
-              <li>
-                <a href="#service-smartphone" className="hover:underline">
-                  Service Smartphone
-                </a>
-              </li>
-              <li>
-                <a href="#service-laptop" className="hover:underline">
-                  Service Laptop
-                </a>
-              </li>
-              <li>
-                <a href="#service-tablet" className="hover:underline">
-                  Service Tablet
-                </a>
-              </li>
-              <li>
-                <a href="#service-aksesoris" className="hover:underline">
-                  Service Aksesoris
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Kolom 3: Perusahaan */}
-          <div>
-            <h3 className="text-lg font-bold mb-4">Perusahaan</h3>
-            <ul className="text-sm text-gray-600 space-y-2">
-              <li>
-                <a href="#tentang-kami" className="hover:underline">
-                  Tentang Kami
-                </a>
-              </li>
-              <li>
-                <a href="#karir" className="hover:underline">
-                  Karir
-                </a>
-              </li>
-              <li>
-                <a href="#blog" className="hover:underline">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:underline">
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Kolom 4: Support */}
-          <div>
-            <h3 className="text-lg font-bold mb-4">Support</h3>
-            <ul className="text-sm text-gray-600 space-y-2">
-              <li>
-                <a href="#syarat-ketentuan" className="hover:underline">
-                  Syarat & Ketentuan
-                </a>
-              </li>
-              <li>
-                <a href="#kebijakan-privasi" className="hover:underline">
-                  Kebijakan Privasi
-                </a>
-              </li>
-              <li>
-                <a href="#bantuan" className="hover:underline">
-                  Bantuan
-                </a>
-              </li>
-              <li>
-                <a href="#kontak" className="hover:underline">
-                  Kontak
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Dynamic Footer Sections */}
+          {footerSections.map((section, index) => (
+            <div key={index}>
+              <h3 className="text-lg font-bold mb-4 text-base-content">
+                {section.title}
+              </h3>
+              <ul className="text-sm space-y-2">
+                {section.items.map((item, itemIndex) => (
+                  <li key={itemIndex}>
+                    <a
+                      href={item.href}
+                      className="text-base-content/70 hover:text-accent hover:underline transition-colors duration-200">
+                      {item.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Copyright */}
-        <div className="text-center text-gray-600 text-sm mt-8 border-t pt-4 bg-white py-4">
+        <div className="text-center text-base-content/70 text-sm mt-8 border-t border-base-content/10 pt-4">
           © 2024 ReparaTech. All rights reserved.
         </div>
       </div>

@@ -1,9 +1,9 @@
+"use client"
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
-import { UserType } from '@/types/User'
 import { ChevronDown } from 'lucide-react'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import ThemeChange from '../ThemeChange'
@@ -13,7 +13,6 @@ const Navigation = () => {
   const { user } = useAuth({ middleware: 'guest' })
 
   const { logout } = useAuth({})
-  const [open, setOpen] = useState<boolean>(false)
 
   return (
     <div className="border-b bg-base-100">
