@@ -16,6 +16,6 @@ export interface ApiResponse {
   }
 }
 
-export interface FormData {
+export interface CategoryFormData {
   name: string
 }

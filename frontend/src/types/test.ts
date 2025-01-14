@@ -18,7 +18,7 @@ export interface ApiResponse {
   }
 }
 
-export interface FormData {
+export interface TestFormData {
   title: string
   content: string
 }

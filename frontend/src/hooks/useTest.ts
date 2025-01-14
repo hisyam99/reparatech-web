@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { testApi } from '@/lib/api/test'
-import type { FormData } from '@/types/test'
+import type { TestFormData } from '@/types/test'
 import { toast } from 'sonner'
 
 export const useTest = () => {
   const queryClient = useQueryClient()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<TestFormData>({
     title: '',
     content: '',
   })

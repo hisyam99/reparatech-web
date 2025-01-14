@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { categoryApi } from '@/lib/api/category'
-import type { FormData } from '@/types/category'
+import type { CategoryFormData } from '@/types/Category'
 import { toast } from 'sonner'
 
 export const useCategory = () => {
   const queryClient = useQueryClient()
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<CategoryFormData>({
     name: '',
   })
 

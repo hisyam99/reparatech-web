@@ -1,5 +1,5 @@
 import customAxios from '@/lib/axios'
-import { ApiResponse } from '@/types/category'
+import { ApiResponse } from '@/types/Category'
 
 export const categoryApi = {
   getAll: async () => {

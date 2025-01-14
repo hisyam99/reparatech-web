@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent } from 'react'
-import { FormData } from '@/types/test'
+import { TestFormData } from '@/types/test'
 
 interface TestFormProps {
-  formData: FormData
+  formData: TestFormData
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
   onInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

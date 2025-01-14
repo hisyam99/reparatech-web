@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent } from 'react'
-import { FormData } from '@/types/category'
+import { CategoryFormData } from '@/types/Category'
 
 interface CategoryFormProps {
-  formData: FormData
+  formData: CategoryFormData
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
   onInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

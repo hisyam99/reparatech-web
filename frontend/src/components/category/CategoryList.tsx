@@ -1,4 +1,4 @@
-import { CategoryData } from '@/types/category'
+import { CategoryData } from '@/types/Category'
 
 interface CategoryListProps {
   categories: CategoryData[]
