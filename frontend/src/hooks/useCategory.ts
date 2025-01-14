@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 
 export const useCategory = () => {
   const queryClient = useQueryClient()
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [formData, setFormData] = useState<CategoryFormData>({
     name: '',
   })
@@ -23,6 +24,9 @@ export const useCategory = () => {
     mutationFn: async () => {
       const formDataToSend = new FormData()
       formDataToSend.append('name', formData.name)
+      if (selectedFile) {
+        formDataToSend.append('image', selectedFile)
+      }
       return categoryApi.create(formDataToSend)
     },
     onSuccess: () => {
@@ -48,6 +52,7 @@ export const useCategory = () => {
 
   const resetForm = () => {
     setFormData({ name: '' })
+    setSelectedFile(null)
   }
 
   return {
@@ -55,6 +60,8 @@ export const useCategory = () => {
     isLoading,
     error,
     formData,
+    selectedFile,
+    setSelectedFile,
     setFormData,
     createMutation,
     deleteMutation,

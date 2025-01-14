@@ -11,6 +11,11 @@ export const categoryApi = {
     const response = await customAxios.post<ApiResponse>(
       '/api/categories',
       formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     )
     return response.data
   },

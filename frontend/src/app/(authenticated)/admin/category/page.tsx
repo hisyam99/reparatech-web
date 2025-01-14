@@ -19,6 +19,7 @@ export default function CategoryPage() {
     error,
     formData,
     setFormData,
+    setSelectedFile,
     createMutation,
     deleteMutation,
   } = useCategory()
@@ -47,6 +48,12 @@ export default function CategoryPage() {
     }))
   }
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0])
+    }
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     createMutation.mutate()
@@ -60,6 +67,7 @@ export default function CategoryPage() {
         formData={formData}
         onSubmit={handleSubmit}
         onInputChange={handleInputChange}
+        onFileChange={handleFileChange}
         isLoading={createMutation.isPending}
       />
 
@@ -77,7 +85,8 @@ export default function CategoryPage() {
       {categoryData && (
         <div className="text-sm opacity-50">
           Total Items: {categoryData.data.total} | Page:{' '}
-          {categoryData.data.current_page} | Per Page: {categoryData.data.per_page}
+          {categoryData.data.current_page} | Per Page:{' '}
+          {categoryData.data.per_page}
         </div>
       )}
     </div>

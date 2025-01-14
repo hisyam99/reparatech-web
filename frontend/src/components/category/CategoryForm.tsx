@@ -7,6 +7,7 @@ interface CategoryFormProps {
   onInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void
+  onFileChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
 }
 
@@ -14,6 +15,7 @@ export function CategoryForm({
   formData,
   onSubmit,
   onInputChange,
+  onFileChange,
   isLoading,
 }: CategoryFormProps) {
   return (
@@ -29,6 +31,15 @@ export function CategoryForm({
               className="input input-bordered"
               value={formData.name}
               onChange={onInputChange}
+              required
+            />
+          </div>
+          <div className="form-control">
+            <input
+              type="file"
+              className="file-input file-input-bordered w-full"
+              onChange={onFileChange}
+              accept="image/*"
               required
             />
           </div>

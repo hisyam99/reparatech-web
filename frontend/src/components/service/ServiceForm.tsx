@@ -1,13 +1,12 @@
 import { ChangeEvent, FormEvent } from 'react'
 import { ServiceFormData } from '@/types/Service'
 import { useCategory } from '@/hooks/useCategory'
+import Link from 'next/link'
 
 interface ServiceFormProps {
   formData: ServiceFormData
   onSubmit: (e: FormEvent<HTMLFormElement>) => void
-  onInputChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => void
+  onInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
 }
@@ -50,19 +49,24 @@ export function ServiceForm({
             />
           </div>
           <div className="form-control">
-            <select
-              name="kategori_id"
-              className="select select-bordered"
-              value={formData.kategori_id}
-              onChange={onInputChange}
-              required>
-              <option value="">Select Category</option>
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center space-x-2">
+              <Link href="/admin/category">
+                <button className="btn btn-primary">Add Categories</button>
+              </Link>
+              <select
+                name="kategori_id"
+                className="select select-bordered flex-1"
+                value={formData.kategori_id}
+                onChange={onInputChange}
+                required>
+                <option value="">Select Category</option>
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="form-control">
             <input
