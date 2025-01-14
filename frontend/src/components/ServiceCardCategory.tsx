@@ -1,20 +1,38 @@
-// components/ServiceCard.tsx
-import React from 'react';
+// /frontend/src/components/ServiceCardCategory.tsx
+import { ServiceData } from '@/types/Service';
+import Link from 'next/link';
 
-interface CategoryItem {
-  title: string;
-  price: string;
-  imgSrc: string;
+interface ServiceCardCategoryProps {
+  service: ServiceData;
 }
 
-const ServiceCardCategory: React.FC<CategoryItem> = ({ title, price, imgSrc }) => {
+const ServiceCardCategory: React.FC<ServiceCardCategoryProps> = ({ service }) => {
   return (
-    <div className="border rounded-lg shadow-md p-4 flex flex-col items-center">
-      <img src={imgSrc} alt={title} className="w-24 h-24 mb-4" />
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-gray-500">Perkiraan Harga</p>
-      <p className="font-bold mb-4">{price}</p>
-      <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Pesan Jasa</button>
+    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+      <figure className="px-4 pt-4">
+        {service.gambar ? (
+          <img
+            src={service.gambar}
+            alt={service.nama_jasa}
+            className="rounded-xl h-48 w-full object-cover"
+          />
+        ) : (
+          <div className="bg-base-200 rounded-xl h-48 w-full flex items-center justify-center">
+            No Image
+          </div>
+        )}
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title text-lg">{service.nama_jasa}</h2>
+        <p className="text-sm opacity-70">Category: {service.category.name}</p>
+        <p className="font-semibold">
+          Rp {service.perkiraan_harga.toLocaleString()}
+        </p>
+        <p className="text-sm">Est. Time: {service.estimasi} days</p>
+        <div className="card-actions justify-end mt-4">
+          <Link href="/services/create" className='btn btn-primary btn-sm'>Book Service</Link>
+        </div>
+      </div>
     </div>
   );
 };

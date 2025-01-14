@@ -19,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${nunito.className} bg-base-100 text-base-content`}>
-        <Navigation/>
+        <div className='sticky top-0 z-10'>
+          <Navigation/>
+        </div>
+        
         {children}
         <Footer/>
       </body>

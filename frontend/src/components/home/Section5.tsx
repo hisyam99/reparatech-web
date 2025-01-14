@@ -2,7 +2,7 @@ import React from 'react'
 
 const Section5 = () => {
   return (
-    <div className="w-full py-12 bg-base-100 text-center">
+    <div id='kontak' className="w-full py-12 bg-base-100 text-center">
       <h2 className="text-xl font-bold mb-5 text-base-content">Hubungi Kami</h2>
       <p className="text-base-content mb-10">
         Kami siap membantu menyelesaikan masalah gadget Anda

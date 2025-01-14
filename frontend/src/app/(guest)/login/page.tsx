@@ -50,7 +50,7 @@ const LoginPage = () => {
 
   const { login } = useAuth({
     middleware: 'guest',
-    redirectIfAuthenticated: '/dashboard',
+    redirectIfAuthenticated: '/redirects',
   })
 
   const form = useForm<FormValues>({

@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react'
 import { CategoryFormData } from '@/types/Category'
+import Link from 'next/link'
 
 interface CategoryFormProps {
   formData: CategoryFormData
@@ -43,12 +44,19 @@ export function CategoryForm({
               required
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={isLoading}>
-            {isLoading ? 'Submitting...' : 'Submit'}
-          </button>
+          <div className="flex space-x-4">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isLoading}>
+              {isLoading ? 'Submitting...' : 'Submit'}
+            </button>
+            <Link href="/admin/services/manage">
+              <button type="button" className="btn btn-primary">
+                Cancel
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     </div>

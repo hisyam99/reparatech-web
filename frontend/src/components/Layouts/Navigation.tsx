@@ -16,7 +16,7 @@ const Navigation = () => {
   const { logout } = useAuth({})
 
   return (
-    <div className="border-b bg-base-100">
+    <div className="bg-base-100">
       <div className="container mx-auto">
         <nav className="navbar flex items-center">
           {/* Logo Section */}
@@ -33,16 +33,16 @@ const Navigation = () => {
                 <Link href="/">Beranda</Link>
               </li>
               <li>
-                <Link href="/fitur">Fitur</Link>
+                <Link href="/#fitur">Fitur</Link>
               </li>
               <li>
-                <Link href="/PesanJasa">Layanan</Link>
+                <Link href="/services">Layanan</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/testimoni">Testimoni</Link>
-              </li>
+              </li> */}
               <li>
-                <Link href="/kontak">Kontak</Link>
+                <Link href="/#kontak">Kontak</Link>
               </li>
             </ul>
           </div>
@@ -100,18 +100,18 @@ const Navigation = () => {
                 </div>
               </>
             ) : (
-              <ul className="menu menu-horizontal px-1">
+              <ul className="menu menu-horizontal px-1 space-x-4">
                 <li>
                   <Link
                     href="/register"
-                    className={pathname === '/register' ? 'active' : ''}>
+                    className={`btn btn-outline btn-primary {pathname === '/register' ? 'active' : ''}`}>
                     Register
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/login"
-                    className={pathname === '/login' ? 'active' : ''}>
+                    className={`btn btn-primary {pathname === '/login' ? 'active' : ''}`}>
                     Login
                   </Link>
                 </li>
