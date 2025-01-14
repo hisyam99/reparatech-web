@@ -32,7 +32,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-const SearchParamsWrapper = ({ setStatus }: { setStatus: (status: string) => void }) => {
+const SearchParamsWrapper = ({
+  setStatus,
+}: {
+  setStatus: (status: string) => void
+}) => {
   const searchParams = useSearchParams()
   useEffect(() => {
     const resetToken = searchParams.get('reset')
@@ -157,6 +161,17 @@ const LoginPage = () => {
                 <Button type="submit">Login</Button>
               </div>
             </form>
+
+            <div className="mt-4 text-center">
+              <span className="text-sm text-gray-600">
+                Apakah Anda belum punya akun?{' '}
+              </span>
+              <Link
+                href="/register"
+                className="text-sm text-primary hover:underline">
+                Daftar di sini
+              </Link>
+            </div>
           </Form>
         </CardContent>
       </Card>

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -9,18 +9,18 @@ import Section4 from '@/components/home/Section4';
 import Section5 from '@/components/home/Section5';
 
 
+import Navigation from '@/components/Layouts/Navigation'
 
 export default function Home() {
-
   return (
     <>
-    <Navbar />
-    <Section1 />
+      <Navigation />
+      <Section1 />
     <Section2 />
     <Section3 />
     <Section4 />
     <Section5 />
-    <Footer />
+      <Footer />
     </>
   )
 }
