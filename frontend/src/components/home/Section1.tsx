@@ -1,4 +1,5 @@
 import React from 'react'
+import { Phone } from 'lucide-react'
 
 const Section1 = () => {
   return (
@@ -17,11 +18,7 @@ const Section1 = () => {
           </button>
           <button className="flex items-center px-6 py-2 bg-transparent text-accent font-bold border-2 border-accent rounded hover:bg-accent hover:text-accent-content">
             Kontak
-            <img
-              src="/assets/telepon1.png"
-              alt="Icon Telepon"
-              className="w-12 h-12 ml-2"
-            />
+            <Phone className='ml-4'/>
           </button>
         </div>
       </div>
