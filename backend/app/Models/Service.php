@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
@@ -16,6 +17,18 @@ class Service extends Model
         'kategori_id',
         'estimasi'
     ];
+
+    /**
+     * image
+     *
+     * @return Attribute
+     */
+    protected function gambar(): Attribute
+    {
+        return Attribute::make(
+            get: fn($gambar) => url('/storage/services/' . $gambar),
+        );
+    }
 
     public function category()
     {
