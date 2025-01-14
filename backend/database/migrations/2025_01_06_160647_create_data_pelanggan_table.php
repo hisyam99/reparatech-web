@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('data_pelanggan', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone', 20);
-            $table->text('address')->nullable();
+            $table->string('nama');
+            $table->string('nomor_hp');
+            $table->string('email');
+            $table->enum('jenis_pengiriman', ['antar-jemput', 'datang-lokasi']);
+            $table->text('informasi');
+            $table->text('alamat');
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }

@@ -12,10 +12,13 @@ class data_pelanggan extends Model
     protected $table = 'data_pelanggan';
 
     protected $fillable = [
-        'name',
+        'nama',
+        'nomor_hp',
         'email',
-        'phone',
-        'address',
+        'jenis_pengiriman',
+        'informasi',
+        'alamat',
+        'gambar',
     ];
 
     public function service_requests()

@@ -1,68 +1,94 @@
 'use client'
 
-import Navbar from '@/components/Navbar'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import Navbar from '@/components/Navbar';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function PesanJasaPage() {
-  const [jenisPengiriman, setJenisPengiriman] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     nama: '',
-    gambar: null,
+    gambar: null as File | null,
     nomorHp: '',
     email: '',
     jenisPengiriman: '',
-    informasiHp: '',
+    informasi: '',
     alamat: '',
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const router = useRouter()
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const target = event.target;
     const { name, value, type } = target;
-  
+
     if (type === 'file' && target instanceof HTMLInputElement) {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
-        [name]: target.files?.[0] || null, // Menghindari undefined saat tidak ada file
+        [name]: target.files ? target.files[0] : null,
       }));
     } else {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
   };
-  
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    if (validateForm()) {
-      setIsModalOpen(true)
-    }
-  }
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
-    if (!formData.nama) newErrors.nama = 'Nama wajib diisi'
-    if (!formData.gambar) newErrors.gambar = 'Gambar wajib diunggah'
-    if (!formData.nomorHp) newErrors.nomorHp = 'Nomor HP/WA wajib diisi'
-    if (!formData.email) newErrors.email = 'Email wajib diisi'
-    if (!formData.jenisPengiriman) newErrors.jenisPengiriman = 'Jenis pengiriman wajib dipilih'
-    if (!formData.informasiHp) newErrors.informasiHp = 'Informasi HP wajib diisi'
-    if (!formData.alamat) newErrors.alamat = 'Alamat wajib diisi'
+    if (!formData.nama) newErrors.nama = 'Nama wajib diisi';
+    if (!formData.gambar) newErrors.gambar = 'Gambar wajib diunggah';
+    if (!formData.nomorHp) newErrors.nomorHp = 'Nomor HP/WA wajib diisi';
+    if (!formData.email) newErrors.email = 'Email wajib diisi';
+    if (!formData.jenisPengiriman) newErrors.jenisPengiriman = 'Jenis pengiriman wajib dipilih';
+    if (!formData.informasi) newErrors.informasi = 'Informasi wajib diisi';
+    if (!formData.alamat) newErrors.alamat = 'Alamat wajib diisi';
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-  const closeModal = () => setIsModalOpen(false)
-  const goToPayment = () => router.push('/Payment')
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+  
+    if (validateForm()) {
+      try {
+        const formPayload = new FormData();
+        formPayload.append('nama', formData.nama);
+        
+        if (formData.gambar) {
+          formPayload.append('gambar', formData.gambar);
+        }
+  
+        formPayload.append('nomorHp', formData.nomorHp);
+        formPayload.append('email', formData.email);
+        formPayload.append('jenisPengiriman', formData.jenisPengiriman);
+        formPayload.append('informasi', formData.informasi);
+        formPayload.append('alamat', formData.alamat);
+  
+        // Menggunakan axios untuk POST data ke backend
+        const response = await axios.post('/api/data_pelanggan', formPayload);
+  
+        if (response.status === 200) {
+          setIsModalOpen(true);
+        } else {
+          console.error('Error:', response);
+          alert('Terjadi kesalahan saat mengirim data.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Gagal mengirim data. Silakan coba lagi.');
+      }
+    }
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+  const goToPayment = () => router.push('/Payment');
 
   return (
     <div className="bg-white min-h-screen">
@@ -70,6 +96,7 @@ export default function PesanJasaPage() {
       <div className="flex justify-center items-center mt-10">
         <div className="w-full max-w-lg p-6 bg-white shadow-xl rounded-lg">
           <h1 className="text-2xl font-bold mb-6 text-black">Pesan Jasa</h1>
+
           <div className="flex items-start space-x-6 mb-8">
             <img
               src="/path-to-your-image.jpg"
@@ -159,18 +186,18 @@ export default function PesanJasaPage() {
               {errors.jenisPengiriman && <p className="text-red-500 text-sm">{errors.jenisPengiriman}</p>}
             </div>
 
-            {/* Informasi HP */}
+            {/* Informasi */}
             <div>
-              <label className="block text-gray-700">Informasi HP</label>
+              <label className="block text-gray-700">Informasi</label>
               <input
                 type="text"
-                name="informasiHp"
-                value={formData.informasiHp}
+                name="informasi"
+                value={formData.informasi}
                 onChange={handleInputChange}
                 placeholder="Tipe HP dll."
                 className="w-full px-4 py-2 border bg-gray-200 text-black rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               />
-              {errors.informasiHp && <p className="text-red-500 text-sm">{errors.informasiHp}</p>}
+              {errors.informasi && <p className="text-red-500 text-sm">{errors.informasi}</p>}
             </div>
 
             {/* Alamat */}
@@ -240,5 +267,5 @@ export default function PesanJasaPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
