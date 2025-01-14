@@ -25,6 +25,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->word(),
+            'image' => fake()->word() . '.png',
         ];
     }
 }

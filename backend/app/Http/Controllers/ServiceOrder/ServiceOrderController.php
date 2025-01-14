@@ -20,7 +20,7 @@ class ServiceOrderController extends Controller
         // Get all service orders with pagination and relationships
         $orders = ServiceOrder::with(['user', 'service.category'])
             ->latest()
-            ->paginate(10);
+            ->paginate(100);
 
         return new ServiceOrderResource(true, 'List Data Service Orders', $orders);
     }

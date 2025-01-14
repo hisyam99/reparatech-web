@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');  // Jenis layanan (smartphone, laptop, dll)
+            $table->string('image');
             $table->timestamps();
         });
     }

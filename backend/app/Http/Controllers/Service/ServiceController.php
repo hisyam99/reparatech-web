@@ -20,7 +20,7 @@ class ServiceController extends Controller
     public function index()
     {
         //get all services with category relation and pagination
-        $services = Service::with('category')->latest()->paginate(5);
+        $services = Service::with('category')->latest()->paginate(100);
 
         //return collection of services as a resource
         return new ServiceResource(true, 'List Data Services', $services);

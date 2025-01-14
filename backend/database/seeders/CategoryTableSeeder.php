@@ -17,12 +17,19 @@ class CategoryTableSeeder extends Seeder
         $categories = [
             [
                 'name' => 'Laptop',
+                'image' => 'laptop.png',
             ],
             [
                 'name' => 'Smartphone',
+                'image' => 'smartphone.png',
             ],
             [
                 'name' => 'Tablet',
+                'image' => 'tablet.png',
+            ],
+            [
+                'name' => 'Aksesoris',
+                'image' => 'aksesoris.png',
             ],
         ];
 
