@@ -23,7 +23,6 @@ const Section3 = () => {
 
       // Loop through all services and add categories
       data.data.data.forEach((service: ServiceData) => {
-        // Correctly access `data.data.data`
         if (!categoryList.includes(service.category.name)) {
           categoryList.push(service.category.name)
         }
@@ -33,8 +32,45 @@ const Section3 = () => {
     }
   }, [data])
 
+  // Dummy categories for error state
+  const dummyCategories = ['Laptop', 'Smartphone', 'Tablet']
+
   if (error) {
-    return <div className="alert alert-error">Error loading categories</div>
+    return (
+      <div className="w-full py-12 bg-base-100 text-center">
+        <h2 className="text-xl font-bold mb-5 text-base-content">Layanan Kami</h2>
+        <p className="text-base-content mb-10">
+          Tidak dapat memuat kategori saat ini. Silakan login untuk melihat semua layanan kami.
+        </p>
+        <div className="flex justify-center flex-wrap gap-6">
+          {/* Dummy cards */}
+          {dummyCategories.map((category, index) => (
+            <div
+              key={index}
+              className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
+              <div className="flex justify-center mb-8">
+                <img
+                  src={`/assets/${category.toLowerCase()}.png`} // Placeholder for real category images
+                  alt={category}
+                  className="w-24 h-auto"
+                />
+              </div>
+              <h3 className="text-lg font-bold mb-6 text-base-content">
+                {category}
+              </h3>
+              <p className="text-sm text-base-content mb-4">
+                Login untuk melihat semua jasa servis yang ada!
+              </p>
+              <Link href="/login" passHref>
+                <button className="w-full px-4 py-2 bg-accent text-accent-content font-bold rounded hover:bg-accent-focus">
+                  Login →
+                </button>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -45,15 +81,13 @@ const Section3 = () => {
         standar layanan profesional.
       </p>
       <div className="flex justify-center flex-wrap gap-6">
-        {/* Dynamically generate service category cards */}
         {categories.map((category, index) => (
           <div
             key={index}
             className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
             <div className="flex justify-center mb-8">
-              {/* You can customize the icons or images per category */}
               <img
-                src={`/assets/${category.toLowerCase()}.png`} // Assuming you have images named like 'smartphone.png'
+                src={`/assets/${category.toLowerCase()}.png`}
                 alt={category}
                 className="w-24 h-auto"
               />
@@ -62,19 +96,16 @@ const Section3 = () => {
               {category}
             </h3>
             <ul className="list-disc pl-5 text-sm text-base-content mb-4">
-              {/* Filter services by category */}
               {data?.data?.data
                 .filter(
                   (service: ServiceData) => service.category.name === category,
-                ) // Correctly access `data.data.data`
+                )
                 .map((service: ServiceData, idx: number) => (
                   <li key={idx}>{service.nama_jasa}</li>
                 ))}
             </ul>
-
-            {/* Link to category-specific service page */}
             <Link
-              href={`/services?category=${category.toLowerCase()}`} // Dynamic category link
+              href={`/services?category=${category.toLowerCase()}`}
               passHref>
               <button className="w-full px-4 py-2 bg-accent text-accent-content font-bold rounded hover:bg-accent-focus">
                 Lihat Detail →
