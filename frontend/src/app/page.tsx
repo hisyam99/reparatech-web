@@ -1,46 +1,19 @@
 'use client'
 
-import Head from 'next/head'
-import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import ThemeChange from '@/components/ThemeChange'
-import DashboardPage from './(authenticated)/dashboard/page'
-
+import Section1 from '@/components/home/Section1'
+import Section2 from '@/components/home/Section2'
+import Section3 from '@/components/home/Section3'
+import Section4 from '@/components/home/Section4'
+import Section5 from '@/components/home/Section5'
 
 export default function Home() {
-  const { user } = useAuth({ middleware: 'guest' })
-
   return (
     <>
-      <Head>
-        <title>ReparaTech</title>
-      </Head>
-
-      <div className="min-h-screen bg-base-100 flex flex-col justify-center items-center">
-        <div className="fixed top-4 right-4 flex space-x-4">
-          <ThemeChange />
-          {user ? (
-            <Link href="/dashboard" className="btn btn-primary btn-sm">
-              Dashboard
-            </Link>
-          ) : (
-            <>
-              <Link href="/login" className="btn btn-secondary btn-sm">
-                Login
-              </Link>
-              <Link href="/register" className="btn btn-accent btn-sm">
-                Register
-              </Link>
-            </>
-          )}
-        </div>
-
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mt-4 text-base-content">
-            ReparaTech
-          </h1>
-        </div>
-      </div>
+      <Section1 />
+      <Section2 />
+      <Section3 />
+      <Section4 />
+      <Section5 />
     </>
   )
 }

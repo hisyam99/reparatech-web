@@ -19,8 +19,15 @@
    # Generate aplikasi key
    php artisan key:generate
 
+   # Buat storage link agar gambar dapat diakses
+   php artisan storage:link
+
    # Migrasi database
    php artisan migrate
+
+   # Buat database seeder
+   # gunanya untuk menambahkan data seperti data user dan lainnya kedalam database
+   php artisan migrate:refresh --seed
 
    # Jalankan server Laravel
    php artisan serve

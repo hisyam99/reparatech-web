@@ -78,10 +78,10 @@ const config: Config = {
   daisyui: {
     themes: [
       {
-        contoh_tema_kustom: {
-          primary: '#a991f7',
-          secondary: '#f6d860',
-          accent: '#37cdbe',
+        light: {
+          primary: '#224cb7',
+          secondary: '#ddedf4',
+          accent: '#224cb7',
           neutral: '#3d4451',
           'base-100': '#ffffff',
 
@@ -95,6 +95,24 @@ const config: Config = {
           '--tab-border': '1px', // border width of tabs
           '--tab-radius': '0.5rem', // border radius of tabs
         },
+        dark: {
+          primary: '#809ade', // Lebih gelap untuk primary color
+          secondary: '#2e2e2e', // Lebih gelap untuk secondary color
+          accent: '#809ade', // Sesuaikan dengan primary color
+          neutral: '#21252b', // Warna netral yang lebih gelap
+          'base-100': '#1e1e1e', // Warna latar belakang lebih gelap
+        
+          '--rounded-box': '1rem', // border radius untuk kotak besar
+          '--rounded-btn': '0.5rem', // border radius untuk tombol
+          '--rounded-badge': '1.9rem', // border radius untuk badge
+          '--animation-btn': '0.25s', // durasi animasi tombol
+          '--animation-input': '0.2s', // durasi animasi input (checkbox, toggle, dll)
+          '--btn-focus-scale': '0.95', // efek skala tombol saat fokus
+          '--border-btn': '1px', // ketebalan border tombol
+          '--tab-border': '1px', // ketebalan border tab
+          '--tab-radius': '0.5rem', // border radius tab
+        }
+        
       },
       'light',
       'dark',
