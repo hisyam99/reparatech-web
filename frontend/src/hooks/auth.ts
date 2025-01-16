@@ -1,3 +1,4 @@
+// File: /frontend/src/hooks/auth.ts
 import useSWR from 'swr'
 import axios from '@/lib/axios'
 import { useEffect, useState } from 'react'
@@ -117,19 +118,6 @@ export const useAuth = ({
   const isAdminRoute = (): boolean => {
     return window.location.pathname.startsWith('/admin')
   }
-
-  // Add useEffect for CSRF initialization
-  useEffect(() => {
-    const initializeCsrf = async () => {
-      try {
-        await axios.get('/sanctum/csrf-cookie')
-      } catch (error) {
-        console.error('Failed to initialize CSRF', error)
-      }
-    }
-
-    initializeCsrf()
-  }, [])
 
   useEffect(() => {
     if (!isSWRLoading) {
