@@ -3,7 +3,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import axios from 'axios'
+import axios from '@/lib/axios'
 
 import Section1 from '@/components/home/Section1'
 import Section2 from '@/components/home/Section2'
