@@ -26,7 +26,7 @@
 
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie",
+        "SESSION_DRIVER": "database",
         "SESSION_SAME_SITE": "none",
         "SESSION_SECURE_COOKIE": "true",
         "SANCTUM_STATEFUL_DOMAINS": "reparatech-web.vercel.app",
