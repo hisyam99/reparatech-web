@@ -13,9 +13,9 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
-        "APP_URL": "8be3dfe68d134bebc56830677b02ecbaed499b6b",
+        "APP_URL": "https://api.reparin.xyz",
         "APP_KEY": "base64:X70+t8khm7fDDCNg9Uo/FeWkI33igZAO1OGOXpgn8JY=",
-        "FRONTEND_URL": "https://reparatech-web.vercel.app",
+        "FRONTEND_URL": "https://v2.reparin.xyz",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
@@ -24,18 +24,20 @@
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "VIEW_COMPILED_PATH": "/tmp",
 
-        "CACHE_DRIVER": "array",
+        "CACHE_STORE": "database",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "database",
-        "SESSION_SAME_SITE": "none",
-        "SESSION_SECURE_COOKIE": "true",
-        "SANCTUM_STATEFUL_DOMAINS": "reparatech-web.vercel.app",
+        "sSESSION_SAME_SITE": "none",
+        "sSESSION_SECURE_COOKIE": "true",
+        "SESSION_DOMAIN": ".reparin.xyz",
+        "SANCTUM_STATEFUL_DOMAINS": "v2.reparin.xyz",
 
         "DB_CONNECTION": "pgsql",
-        "DB_HOST": "ep-autumn-surf-a1mu4c6l.ap-southeast-1.aws.neon.tech",
-        "DB_PORT": "5432",
-        "DB_DATABASE": "reparatech-db",
-        "DB_USERNAME": "reparatech-db_owner",
-        "DB_PASSWORD": "biGcMP5fA4lw"
+        "DATABASE_URL": "postgresql://postgres.fwkqvcdnjztdvzlbaoph:reparatech@aws-0-us-west-1.pooler.supabase.com:5432/postgres",
+        "sDB_HOST": "ep-autumn-surf-a1mu4c6l.ap-southeast-1.aws.neon.tech",
+        "sDB_PORT": "5432",
+        "sDB_DATABASE": "reparatech-db",
+        "sDB_USERNAME": "reparatech-db_owner",
+        "sDB_PASSWORD": "biGcMP5fA4lw"
     }
 }

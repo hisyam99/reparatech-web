@@ -41,8 +41,12 @@
     },
     "scripts": {
         "vercel": [
+            "rm config/database.php && mv config/database.php.vercel config/database.php",
+            "mv app/Http/Middleware/VerifyCsrfToken.php.bak app/Http/Middleware/VerifyCsrfToken.php",
             "@php -v",
+            "node -v",
             "npm -v",
+            "ls -la",
             "@php artisan storage:link",
             "@php artisan migrate",
             "@php artisan migrate:refresh --seed"
