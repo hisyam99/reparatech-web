@@ -5,16 +5,15 @@ import { ServiceOrderList } from '@/components/serviceOrder/ServiceOrderList'
 import { useServiceOrder } from '@/hooks/useServiceOrder'
 import { Toaster } from 'sonner'
 import Link from 'next/link'
-import { Plus, FileText } from 'lucide-react' // Mengimpor ikon dari lucide-react
+import { Plus, FileText } from 'lucide-react'
 
 export default function UserDashboard() {
+  const { user } = useAuth({ middleware: 'guest' })
   const { userOrders, userOrdersLoading, error } = useServiceOrder()
 
   if (error) {
     return <div className="alert alert-error">Error loading orders</div>
   }
-
-  const { user } = useAuth({ middleware: 'guest' })
 
   return (
     <div className="p-6 space-y-8">

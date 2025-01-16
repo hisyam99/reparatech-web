@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "framework": null,
+    "functions": {
+        "api/index.php": { "runtime": "vercel-php@0.7.3" }
+    },
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "true",
+        "APP_URL": "8be3dfe68d134bebc56830677b02ecbaed499b6b",
+        "APP_KEY": "base64:X70+t8khm7fDDCNg9Uo/FeWkI33igZAO1OGOXpgn8JY=",
+        "FRONTED_URL": "https://reparin-web.vercel.app",
+
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "VIEW_COMPILED_PATH": "/tmp",
+
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "cookie",
+
+        "DB_CONNECTION": "mariadb",
+        "DB_HOST": "luf6j.h.filess.io",
+        "DB_PORT": "3305",
+        "DB_DATABASE": "reparatech_partyfuel",
+        "DB_USERNAME": "reparatech_partyfuel",
+        "DB_PASSWORD": "8be3dfe68d134bebc56830677b02ecbaed499b6b"
+    }
+}
