@@ -15,7 +15,7 @@
         "APP_DEBUG": "true",
         "APP_URL": "8be3dfe68d134bebc56830677b02ecbaed499b6b",
         "APP_KEY": "base64:X70+t8khm7fDDCNg9Uo/FeWkI33igZAO1OGOXpgn8JY=",
-        "FRONTED_URL": "https://reparin-web.vercel.app",
+        "FRONTEND_URL": "https://reparatech-web.vercel.app",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
@@ -27,12 +27,15 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
+        "SESSION_SAME_SITE": "none",
+        "SESSION_SECURE_COOKIE": "true",
+        "SANCTUM_STATEFUL_DOMAINS": "reparatech-web.vercel.app",
 
-        "DB_CONNECTION": "mariadb",
-        "DB_HOST": "luf6j.h.filess.io",
-        "DB_PORT": "3305",
-        "DB_DATABASE": "reparatech_partyfuel",
-        "DB_USERNAME": "reparatech_partyfuel",
-        "DB_PASSWORD": "8be3dfe68d134bebc56830677b02ecbaed499b6b"
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "ep-autumn-surf-a1mu4c6l.ap-southeast-1.aws.neon.tech",
+        "DB_PORT": "5432",
+        "DB_DATABASE": "reparatech-db",
+        "DB_USERNAME": "reparatech-db_owner",
+        "DB_PASSWORD": "biGcMP5fA4lw"
     }
 }
