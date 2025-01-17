@@ -8,7 +8,7 @@ import { Home, Layers, Calendar, Folder, X, Menu } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navigationItems = [
-  { path: '/admin', label: 'Dashboard', icon: Home },
+  { path: '/admin', label: 'Dashboard Admin', icon: Home },
   { path: '/admin/category', label: 'Manage Categories', icon: Folder },
   { path: '/admin/services/manage', label: 'Manage Services', icon: Layers },
   {
