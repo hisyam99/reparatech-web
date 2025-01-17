@@ -1,3 +1,5 @@
+// File: /frontend/src/components/home/Section3.tsx
+
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -6,6 +8,7 @@ import customAxios from '@/lib/axios'
 import useSWR from 'swr'
 import { ServiceData, ApiResponse } from '@/types/Service'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const fetcher = (url: string) =>
   customAxios.get<ApiResponse>(url).then(res => res.data)
@@ -38,9 +41,12 @@ const Section3 = () => {
   if (error) {
     return (
       <div className="w-full py-12 bg-base-100 text-center">
-        <h2 className="text-xl font-bold mb-5 text-base-content">Layanan Kami</h2>
+        <h2 className="text-xl font-bold mb-5 text-base-content">
+          Layanan Kami
+        </h2>
         <p className="text-base-content mb-10">
-          Tidak dapat memuat kategori saat ini. Silakan login untuk melihat semua layanan kami.
+          Tidak dapat memuat kategori saat ini. Silakan login untuk melihat
+          semua layanan kami.
         </p>
         <div className="flex justify-center flex-wrap gap-6">
           {/* Dummy cards */}
@@ -48,11 +54,12 @@ const Section3 = () => {
             <div
               key={index}
               className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
-              <div className="flex justify-center mb-8">
-                <img
+              <div className="flex justify-center mb-8 relative w-24 h-24">
+                <Image
                   src={`/assets/${category.toLowerCase()}.png`} // Placeholder for real category images
                   alt={category}
-                  className="w-24 h-auto"
+                  layout="fill"
+                  objectFit="contain"
                 />
               </div>
               <h3 className="text-lg font-bold mb-6 text-base-content">
@@ -85,11 +92,12 @@ const Section3 = () => {
           <div
             key={index}
             className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
-            <div className="flex justify-center mb-8">
-              <img
+            <div className="flex justify-center mb-8 relative w-24 h-24">
+              <Image
                 src={`/assets/${category.toLowerCase()}.png`}
                 alt={category}
-                className="w-24 h-auto"
+                layout="fill"
+                objectFit="contain"
               />
             </div>
             <h3 className="text-lg font-bold mb-6 text-base-content">
