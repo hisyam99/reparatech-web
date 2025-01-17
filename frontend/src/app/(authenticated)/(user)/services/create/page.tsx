@@ -1,3 +1,5 @@
+// In /frontend/src/app/(authenticated)/(user)/services/create/page.tsx
+
 'use client'
 
 import { ServiceOrderForm } from '@/components/serviceOrder/ServiceOrderForm'
@@ -5,6 +7,7 @@ import { ServiceOrderList } from '@/components/serviceOrder/ServiceOrderList'
 import { useServiceOrder } from '@/hooks/useServiceOrder'
 import { useQuery } from '@tanstack/react-query'
 import { serviceApi } from '@/lib/api/service'
+import { useAuth } from '@/hooks/auth'
 import { ChangeEvent, FormEvent } from 'react'
 import { Toaster } from 'sonner'
 
@@ -15,16 +18,25 @@ interface CustomError extends Error {
 }
 
 export default function ServiceOrdersPage() {
+  const { user } = useAuth({
+    middleware: 'auth',
+  })
+
   const {
     orderData,
     isLoading,
     error,
     formData,
+    editingOrder,
     setFormData,
     createMutation,
+    updateMutation,
     updateStatusMutation,
+    deleteMutation,
     userOrders,
     userOrdersLoading,
+    startEdit,
+    resetForm,
   } = useServiceOrder()
 
   const { data: servicesData } = useQuery({
@@ -58,7 +70,15 @@ export default function ServiceOrdersPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    createMutation.mutate()
+    if (editingOrder) {
+      updateMutation.mutate()
+    } else {
+      createMutation.mutate()
+    }
+  }
+
+  const handleDelete = (id: number) => {
+    deleteMutation.mutate(id)
   }
 
   const handleUpdateStatus = (
@@ -72,13 +92,15 @@ export default function ServiceOrdersPage() {
     <div className="p-4 space-y-6">
       <Toaster position="top-right" />
 
-      {/* Order Creation Form */}
+      {/* Order Creation/Edit Form */}
       <ServiceOrderForm
         formData={formData}
         onSubmit={handleSubmit}
         onInputChange={handleInputChange}
         services={servicesData?.data.data ?? []}
-        isLoading={createMutation.isPending}
+        isLoading={createMutation.isPending || updateMutation.isPending}
+        isEditing={!!editingOrder}
+        onCancel={resetForm}
       />
 
       {/* My Orders List */}
@@ -89,6 +111,9 @@ export default function ServiceOrdersPage() {
             orders={userOrders?.data.data ?? []}
             isLoading={userOrdersLoading}
             onUpdateStatus={handleUpdateStatus}
+            onEdit={startEdit}
+            onDelete={handleDelete}
+            userId={user?.id} // Pass the current user's ID from useAuth hook
           />
         </div>
       </div>

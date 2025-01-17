@@ -3,7 +3,7 @@
 import { ServiceForm } from '@/components/service/ServiceForm'
 import { ServiceList } from '@/components/service/ServiceList'
 import { useService } from '@/hooks/useService'
-import { ChangeEvent, FormEvent } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Toaster } from 'sonner'
 
 interface CustomError extends Error {
@@ -18,11 +18,17 @@ export default function ServicesPage() {
     isLoading,
     error,
     formData,
+    editingService,
     setFormData,
     setSelectedFile,
     createMutation,
+    updateMutation,
     deleteMutation,
+    startEdit,
+    resetForm,
   } = useService()
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const customError = error as CustomError
 
@@ -56,27 +62,87 @@ export default function ServicesPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    createMutation.mutate()
+    if (editingService) {
+      updateMutation.mutate()
+    } else {
+      createMutation.mutate()
+    }
+    setIsModalOpen(false)  // Close the modal after submission
   }
 
   return (
     <div className="p-4 space-y-6">
       <Toaster position="top-right" />
 
-      <ServiceForm
-        formData={formData}
-        onSubmit={handleSubmit}
-        onInputChange={handleInputChange}
-        onFileChange={handleFileChange}
-        isLoading={createMutation.isPending}
-      />
+      {/* Button to open modal */}
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          setIsModalOpen(true)
+          resetForm() // Reset form for new service
+        }}
+      >
+        Add New Service
+      </button>
 
+      {/* Modal for creating/editing service */}
+      <input
+        type="checkbox"
+        id="service-modal"
+        className="modal-toggle"
+        checked={isModalOpen}
+        onChange={() => {}}
+      />
+      <div className="modal">
+        <div className="modal-box relative">
+          <label
+            htmlFor="service-modal"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+            onClick={() => {
+              setIsModalOpen(false)
+              resetForm()  // Reset form when modal is closed
+            }}
+          >
+            ✕
+          </label>
+          <h2 className="text-xl font-bold mb-4">
+            {editingService ? 'Edit Service' : 'Create New Service'}
+          </h2>
+
+          {/* ServiceForm Component */}
+          <ServiceForm
+            formData={formData}
+            onSubmit={handleSubmit}
+            onInputChange={handleInputChange}
+            onFileChange={handleFileChange}
+            isLoading={createMutation.isPending || updateMutation.isPending}
+            isEditing={!!editingService}
+            onCancel={() => {
+              setIsModalOpen(false)
+              resetForm()  // Reset form when canceling
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Service List */}
       <div className="card bg-base-200 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Services List</h2>
           <ServiceList
             services={serviceData?.data.data ?? []}
             onDelete={id => deleteMutation.mutate(id)}
+            onEdit={(service) => {
+              setFormData({
+                nama_jasa: service.nama_jasa,
+                kategori_id: service.kategori_id,
+                perkiraan_harga: service.perkiraan_harga,
+                estimasi: service.estimasi,
+                // You can add other fields like images if necessary
+              })
+              startEdit(service)
+              setIsModalOpen(true)  // Open modal when editing
+            }}
             isLoading={isLoading}
           />
         </div>

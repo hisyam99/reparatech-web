@@ -10,6 +10,8 @@ interface CategoryFormProps {
   ) => void
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
+  isEditing: boolean
+  onCancel: () => void
 }
 
 export function CategoryForm({
@@ -18,11 +20,15 @@ export function CategoryForm({
   onInputChange,
   onFileChange,
   isLoading,
+  isEditing,
+  onCancel,
 }: CategoryFormProps) {
   return (
     <div className="card bg-base-200 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">Create New Category</h2>
+        <h2 className="card-title">
+          {isEditing ? 'Edit Category' : 'Create New Category'}
+        </h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="form-control">
             <input
@@ -41,21 +47,38 @@ export function CategoryForm({
               className="file-input file-input-bordered w-full"
               onChange={onFileChange}
               accept="image/*"
-              required
+              required={!isEditing}
             />
+            {isEditing && (
+              <label className="label">
+                <span className="label-text-alt">
+                  Leave empty to keep current image
+                </span>
+              </label>
+            )}
           </div>
           <div className="flex space-x-4">
             <button
               type="submit"
               className="btn btn-primary"
               disabled={isLoading}>
-              {isLoading ? 'Submitting...' : 'Submit'}
+              {isLoading ? 'Submitting...' : isEditing ? 'Update' : 'Submit'}
             </button>
-            <Link href="/admin/services/manage">
-              <button type="button" className="btn btn-primary">
+            {isEditing ? (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onCancel}>
+                Cancel Edit
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onCancel}>
                 Cancel
               </button>
-            </Link>
+            )}
           </div>
         </form>
       </div>

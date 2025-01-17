@@ -35,8 +35,8 @@ class CategoryController extends Controller
     {
         //define validation rules
         $validator = Validator::make($request->all(), [
-            'name'      => 'required|string|unique:categories,name',
-            'image'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name'  => 'required|string|unique:categories,name',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         //check if validation fails
@@ -44,14 +44,21 @@ class CategoryController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //upload image
+        //upload image based on environment
         $image = $request->file('image');
-        $image->storeAs('public/categories', $image->hashName());
+        if (env('FILESYSTEM_DISK') === 'supabase') {
+            // Supabase storage
+            $path = $image->store('categories', 'supabase');
+        } else {
+            // Local storage
+            $image->storeAs('public/categories', $image->hashName());
+            $path = $image->hashName();
+        }
 
         //create category
         $category = Category::create([
-            'name'      => $request->name,
-            'image'     => $image->hashName(),
+            'name'  => $request->name,
+            'image' => $path,
         ]);
 
         //return response
@@ -96,22 +103,26 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         if ($request->hasFile('image')) {
-
-            //upload image
             $image = $request->file('image');
-            $image->storeAs('public/categories', $image->hashName());
+            if (env('FILESYSTEM_DISK') === 'supabase') {
+                // Supabase storage
+                $path = $image->store('categories', 'supabase');
+                if ($category->image) {
+                    Storage::disk('supabase')->delete($category->image);
+                }
+            } else {
+                // Local storage
+                $image->storeAs('public/categories', $image->hashName());
+                //delete old image
+                Storage::delete('public/categories/' . basename($category->image));
+                $path = $image->hashName();
+            }
 
-            //delete old image
-            Storage::delete('public/categories/' . basename($category->image));
-
-            //update category with new image
             $category->update([
-                'image'     => $image->hashName(),
-                'name'      => $request->name,
+                'image' => $path,
+                'name'  => $request->name,
             ]);
         } else {
-
-            //update category without image
             $category->update([
                 'name' => $request->name,
             ]);
@@ -132,8 +143,15 @@ class CategoryController extends Controller
         //find category by ID
         $category = Category::find($id);
 
-        //delete image
-        Storage::delete('public/categories/' . basename($category->image));
+        if ($category->image) {
+            if (env('FILESYSTEM_DISK') === 'supabase') {
+                // Delete from Supabase
+                Storage::disk('supabase')->delete($category->image);
+            } else {
+                //delete image
+                Storage::delete('public/categories/' . basename($category->image));
+            }
+        }
 
         //delete category
         $category->delete();

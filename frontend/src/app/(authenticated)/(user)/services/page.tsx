@@ -1,8 +1,7 @@
-// /frontend/src/app/(authenticated)/category/page.tsx
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import React, { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import CategoryJasaButtons from '@/components/CategoryJasaButtons'
 import ServiceCardCategory from '@/components/ServiceCardCategory'
 import customAxios from '@/lib/axios'
@@ -23,8 +22,7 @@ interface ApiResponse {
 const fetcher = (url: string) =>
   customAxios.get<ApiResponse>(url).then(res => res.data)
 
-const JasaPage: React.FC = () => {
-  const [isClient, setIsClient] = useState(false)
+const ServicesList = () => {
   const searchParams = useSearchParams()
   const category = searchParams?.get('category') || 'smartphone'
 
@@ -32,12 +30,6 @@ const JasaPage: React.FC = () => {
     '/api/services',
     fetcher,
   )
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  if (!isClient) return null
 
   if (error) {
     return <div className="alert alert-error">Error loading services</div>
@@ -50,19 +42,18 @@ const JasaPage: React.FC = () => {
     ) || []
 
   if (filteredServices.length === 0 && response) {
-    // Only show no services message if data has loaded
     return (
-      <div className="container mx-auto mt-8">
+      <>
         <CategoryJasaButtons currentCategory={category} />
         <div className="text-center py-8">
           No services available for this category
         </div>
-      </div>
+      </>
     )
   }
 
   return (
-    <div className="container mx-auto mt-8">
+    <>
       <CategoryJasaButtons currentCategory={category} />
       <h2 className="text-center text-2xl font-bold mb-8">
         Service {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -79,6 +70,21 @@ const JasaPage: React.FC = () => {
           ))}
         </div>
       )}
+    </>
+  )
+}
+
+const JasaPage: React.FC = () => {
+  return (
+    <div className="container mx-auto mt-8">
+      <Suspense
+        fallback={
+          <div className="flex justify-center">
+            <div className="loading loading-spinner loading-lg"></div>
+          </div>
+        }>
+        <ServicesList />
+      </Suspense>
     </div>
   )
 }

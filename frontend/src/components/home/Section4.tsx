@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 const Section4 = () => {
   return (
@@ -16,10 +17,12 @@ const Section4 = () => {
             key={num}
             className="bg-base-100 border rounded-lg shadow-md p-6">
             <div className="flex items-center mb-4">
-              <img
+              <Image
                 src="/assets/testimoni.png"
                 alt={`Pelanggan ${num}`}
-                className="w-12 h-12 rounded-full mr-3"
+                width={48}
+                height={48}
+                className="rounded-full mr-3"
               />
               <div>
                 <h3 className="text-sm font-bold text-base-content">
@@ -29,7 +32,7 @@ const Section4 = () => {
               </div>
             </div>
             <p className="text-sm text-base-content">
-              "Testimonial content here"
+              &quot;Testimonial content here&quot;
             </p>
           </div>
         ))}

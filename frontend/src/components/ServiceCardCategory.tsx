@@ -10,9 +10,9 @@ const ServiceCardCategory: React.FC<ServiceCardCategoryProps> = ({ service }) =>
   return (
     <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
       <figure className="px-4 pt-4">
-        {service.gambar ? (
+        {service.image ? (
           <img
-            src={service.gambar}
+            src={service.image}
             alt={service.nama_jasa}
             className="rounded-xl h-48 w-full object-cover"
           />

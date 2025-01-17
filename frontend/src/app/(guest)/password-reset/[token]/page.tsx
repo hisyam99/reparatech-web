@@ -1,143 +1,92 @@
 'use client'
-import Link from 'next/link'
+
+import React, { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-import { useAuth } from '@/hooks/auth'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import axios from 'axios'
+import CategoryJasaButtons from '@/components/CategoryJasaButtons'
+import ServiceCardCategory from '@/components/ServiceCardCategory'
+import customAxios from '@/lib/axios'
+import useSWR from 'swr'
+import { ServiceData } from '@/types/Service'
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+interface ApiResponse {
+  success: boolean
+  message: string
+  data: {
+    data: ServiceData[]
+    current_page: number
+    per_page: number
+    total: number
+  }
+}
 
-const formSchema = z
-  .object({
-    email: z.string().email({ message: 'Invalid email address.' }),
-    password: z
-      .string()
-      .min(8, { message: 'Password must be at least 8 characters.' }),
-    password_confirmation: z.string(),
-  })
-  .refine(data => data.password === data.password_confirmation, {
-    message: "Passwords don't match",
-    path: ['password_confirmation'],
-  })
+const fetcher = (url: string) =>
+  customAxios.get<ApiResponse>(url).then(res => res.data)
 
-type FormValues = z.infer<typeof formSchema>
-
-const PasswordResetPage = () => {
+const ServicesList = () => {
   const searchParams = useSearchParams()
-  const { resetPassword } = useAuth({ middleware: 'guest' })
+  const category = searchParams?.get('category') || 'smartphone'
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-      password_confirmation: '',
-    },
-  })
+  const { data: response, error } = useSWR<ApiResponse>(
+    '/api/services',
+    fetcher,
+  )
 
-  useEffect(() => {
-    form.setValue('email', searchParams.get('email') ?? '')
-  }, [searchParams, form])
+  if (error) {
+    return <div className="alert alert-error">Error loading services</div>
+  }
 
-  const onSubmit = async (values: FormValues) => {
-    try {
-      await resetPassword(values)
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 422) {
-        const errors = error.response.data.errors
-        Object.keys(errors).forEach(key => {
-          form.setError(key as keyof FormValues, {
-            type: 'manual',
-            message: errors[key][0],
-          })
-        })
-      }
-    }
+  // Filter services based on selected category
+  const filteredServices =
+    response?.data.data.filter(
+      service => service.category.name.toLowerCase() === category.toLowerCase(),
+    ) || []
+
+  if (filteredServices.length === 0 && response) {
+    return (
+      <>
+        <CategoryJasaButtons currentCategory={category} />
+        <div className="text-center py-8">
+          No services available for this category
+        </div>
+      </>
+    )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Card className="w-full max-w-md p-6">
-        <CardHeader className="flex justify-center">
-          <Link href="/">
-            <span className="text-2xl font-bold">ReparaTech</span>
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" disabled {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <>
+      <CategoryJasaButtons currentCategory={category} />
+      <h2 className="text-center text-2xl font-bold mb-8">
+        Service {category.charAt(0).toUpperCase() + category.slice(1)}
+      </h2>
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter new password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      {!response ? (
+        <div className="flex justify-center">
+          <div className="loading loading-spinner loading-lg"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredServices.map(service => (
+            <ServiceCardCategory key={service.id} service={service} />
+          ))}
+        </div>
+      )}
+    </>
+  )
+}
 
-              <FormField
-                control={form.control}
-                name="password_confirmation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Confirm new password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex justify-end">
-                <Button type="submit">Reset Password</Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+const JasaPage: React.FC = () => {
+  return (
+    <div className="container mx-auto mt-8">
+      <Suspense
+        fallback={
+          <div className="flex justify-center">
+            <div className="loading loading-spinner loading-lg"></div>
+          </div>
+        }>
+        <ServicesList />
+      </Suspense>
     </div>
   )
 }
 
-export default PasswordResetPage
+export default JasaPage

@@ -20,6 +20,20 @@ export const serviceApi = {
     return response.data
   },
 
+  update: async (id: number, formData: FormData) => {
+    formData.append('_method', 'PUT') // For Laravel backend
+    const response = await customAxios.post<ApiResponse>(
+      `/api/services/${id}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
+    return response.data
+  },
+
   delete: async (id: number) => {
     const response = await customAxios.delete(`/api/services/${id}`)
     return response.data

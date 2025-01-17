@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Service extends Model
 {
@@ -12,7 +13,7 @@ class Service extends Model
 
     protected $fillable = [
         'nama_jasa',
-        'gambar',
+        'image',
         'perkiraan_harga',
         'kategori_id',
         'estimasi'
@@ -23,10 +24,20 @@ class Service extends Model
      *
      * @return Attribute
      */
-    protected function gambar(): Attribute
+    protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn($gambar) => url('/storage/services/' . $gambar),
+            get: function ($image) {
+                // Check the environment
+                if (env('FILESYSTEM_DISK') === 'supabase') {
+                    /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+                    $disk = Storage::disk('supabase');
+                    return $image ? $disk->url($image) : null;
+                }
+
+                // Default to local storage
+                return $image ? url('/storage/services/' . $image) : null;
+            },
         );
     }
 

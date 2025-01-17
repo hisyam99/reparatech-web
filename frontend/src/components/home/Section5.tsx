@@ -1,11 +1,13 @@
+// File 1: /frontend/src/components/home/Section5.tsx
 import React from 'react'
+import Image from 'next/image'
 
 const Section5 = () => {
   return (
-    <div id='kontak' className="w-full py-12 bg-base-100 text-center">
+    <div id="kontak" className="w-full py-12 bg-base-100 text-center">
       <h2 className="text-xl font-bold mb-5 text-base-content">Hubungi Kami</h2>
       <p className="text-base-content mb-10">
-        Kami siap membantu menyelesaikan masalah gadget Anda
+        Kami siap membantu menyelesaikan masalah gadget Anda.
       </p>
 
       <div className="max-w-[700px] mx-auto bg-base-200 rounded-lg shadow-md p-6">
@@ -28,7 +30,13 @@ const Section5 = () => {
             },
           ].map((item, index) => (
             <div key={index} className="flex items-start">
-              <img src={item.icon} alt={item.title} className="w-8 h-8 mr-4" />
+              <Image
+                src={item.icon}
+                alt={item.title}
+                width={32}
+                height={32}
+                className="mr-4"
+              />
               <div className="text-left">
                 <h3 className="text-sm font-bold text-base-content">
                   {item.title}

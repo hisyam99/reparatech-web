@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { categoryApi } from '@/lib/api/category'
-import type { CategoryFormData } from '@/types/Category'
+import type { CategoryFormData, CategoryData } from '@/types/Category'
 import { toast } from 'sonner'
 
 export const useCategory = () => {
@@ -10,6 +10,9 @@ export const useCategory = () => {
   const [formData, setFormData] = useState<CategoryFormData>({
     name: '',
   })
+  const [editingCategory, setEditingCategory] = useState<CategoryData | null>(
+    null,
+  )
 
   const {
     data: categoryData,
@@ -39,6 +42,26 @@ export const useCategory = () => {
     },
   })
 
+  const updateMutation = useMutation({
+    mutationFn: async () => {
+      if (!editingCategory) return
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.name)
+      if (selectedFile) {
+        formDataToSend.append('image', selectedFile)
+      }
+      return categoryApi.update(editingCategory.id, formDataToSend)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      toast.success('Category updated successfully')
+      resetForm()
+    },
+    onError: error => {
+      toast.error(error.message || 'Something went wrong')
+    },
+  })
+
   const deleteMutation = useMutation({
     mutationFn: categoryApi.delete,
     onSuccess: () => {
@@ -53,6 +76,12 @@ export const useCategory = () => {
   const resetForm = () => {
     setFormData({ name: '' })
     setSelectedFile(null)
+    setEditingCategory(null)
+  }
+
+  const startEdit = (category: CategoryData) => {
+    setEditingCategory(category)
+    setFormData({ name: category.name })
   }
 
   return {
@@ -61,9 +90,13 @@ export const useCategory = () => {
     error,
     formData,
     selectedFile,
+    editingCategory,
     setSelectedFile,
     setFormData,
     createMutation,
+    updateMutation,
     deleteMutation,
+    startEdit,
+    resetForm,
   }
 }
