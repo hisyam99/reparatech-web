@@ -60,6 +60,7 @@ const Section3 = () => {
                   alt={category}
                   layout="fill"
                   objectFit="contain"
+                  unoptimized // Optional if images are not from a Next.js-compatible source
                 />
               </div>
               <h3 className="text-lg font-bold mb-6 text-base-content">
@@ -93,12 +94,26 @@ const Section3 = () => {
             key={index}
             className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
             <div className="flex justify-center mb-8 relative w-24 h-24">
-              <Image
-                src={`/assets/${category.toLowerCase()}.png`}
-                alt={category}
-                layout="fill"
-                objectFit="contain"
-              />
+              {data?.data?.data.some(
+                (service: ServiceData) =>
+                  service.category.name === category && service.image, // Pengecekan image asli
+              ) ? (
+                <Image
+                  src={`/assets/${category.toLowerCase()}.png`}
+                  alt={category}
+                  layout="fill"
+                  objectFit="contain"
+                  unoptimized // Optional if images are not from a Next.js-compatible source
+                />
+              ) : (
+                <Image
+                  src="/assets/placeholder.png" // Placeholder image jika tidak ada gambar asli
+                  alt="Placeholder"
+                  layout="fill"
+                  objectFit="contain"
+                  unoptimized
+                />
+              )}
             </div>
             <h3 className="text-lg font-bold mb-6 text-base-content">
               {category}
