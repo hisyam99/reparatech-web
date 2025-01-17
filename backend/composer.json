@@ -46,6 +46,7 @@
             "npm -v",
             "ls -la",
             "composer require league/flysystem-aws-s3-v3 '^3.0' --with-all-dependencies",
+            "php artisan key:generate",
             "@php artisan migrate",
             "@php artisan migrate:refresh --seed"
         ],
