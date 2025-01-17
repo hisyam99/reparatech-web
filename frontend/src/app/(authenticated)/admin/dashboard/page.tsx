@@ -1,4 +1,3 @@
-// /frontend/src/app/(authenticated)/admin/dashboard/page.tsx
 'use client'
 
 import { ServiceOrderList } from '@/components/serviceOrder/ServiceOrderList'
@@ -104,27 +103,28 @@ export default function Dashboard() {
         <div className="card-body">
           <h2 className="card-title">Recent Services</h2>
           <ServiceList
-            services={servicesData?.data.data.slice(0, 5) ?? []}
-            onDelete={() => {}} // Read-only in dashboard
+            services={servicesData?.data.data ?? []}
+            onDelete={() => {}} // Fungsi tetap, tetapi tidak akan aktif karena tombol dinonaktifkan
+            onEdit={() => {}} // Fungsi tetap, tetapi tidak akan aktif karena tombol dinonaktifkan
             isLoading={isServicesLoading}
+            disableActions={true} // Properti baru untuk menonaktifkan tombol
           />
         </div>
       </div>
 
-      <div className="text-sm opacity-50">
-        {ordersData && (
-          <span>
-            Total Orders: {ordersData.data.total} | Page:{' '}
-            {ordersData.data.current_page}
-          </span>
-        )}
-        {servicesData && (
-          <span className="ml-4">
-            Total Services: {servicesData.data.total} | Page:{' '}
-            {servicesData.data.per_page}
-          </span>
-        )}
-      </div>
+      {servicesData && (
+        <div className="text-sm opacity-50">
+          Total Services: {servicesData.data.total} | Page:{' '}
+          {servicesData.data.current_page} | Per Page:{' '}
+          {servicesData.data.per_page}
+        </div>
+      )}
+      {ordersData && (
+        <div className="text-sm opacity-50 mt-2">
+          Total Orders: {ordersData.data.total} | Page:{' '}
+          {ordersData.data.current_page}
+        </div>
+      )}
     </div>
   )
 }

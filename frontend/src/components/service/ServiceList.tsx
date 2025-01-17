@@ -5,6 +5,7 @@ interface ServiceListProps {
   onDelete: (id: number) => void
   onEdit: (service: ServiceData) => void
   isLoading: boolean
+  disableActions?: boolean
 }
 
 export function ServiceList({
@@ -12,6 +13,7 @@ export function ServiceList({
   onDelete,
   onEdit,
   isLoading,
+  disableActions,
 }: ServiceListProps) {
   if (isLoading) {
     return <div className="loading loading-spinner loading-lg"></div>
@@ -48,18 +50,22 @@ export function ServiceList({
                   </p>
                 </div>
               </div>
-              <div className="space-x-2">
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => onEdit(service)}>
-                  Edit
-                </button>
-                <button
-                  className="btn btn-error btn-sm"
-                  onClick={() => onDelete(service.id)}>
-                  Delete
-                </button>
-              </div>
+              {!disableActions && (
+                <div className="space-x-2">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => onEdit(service)}
+                    disabled={disableActions}>
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-error btn-sm"
+                    onClick={() => onDelete(service.id)}
+                    disabled={disableActions}>
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
