@@ -3,7 +3,7 @@ import { CategoryData } from './Category'
 export interface ServiceData {
   id: number
   nama_jasa: string
-  gambar: string
+  image: string
   perkiraan_harga: number
   kategori_id: number
   estimasi: number

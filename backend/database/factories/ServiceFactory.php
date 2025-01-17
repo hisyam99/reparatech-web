@@ -25,7 +25,7 @@ class ServiceFactory extends Factory
     {
         return [
             'nama_jasa' => fake()->word(),
-            'gambar' => fake()->word() . '.png',
+            'image' => fake()->word() . '.png',
             'perkiraan_harga' => fake()->numberBetween(100000, 10000000),
             'kategori_id' => self::$kategori_id ??= fake()->numberBetween(1, 3),
             'estimasi' => fake()->numberBetween(1, 100),

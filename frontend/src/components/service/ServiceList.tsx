@@ -26,9 +26,9 @@ export function ServiceList({
           <div className="card-body">
             <div className="flex justify-between items-start">
               <div className="flex gap-4">
-                {service.gambar && (
+                {service.image && (
                   <img
-                    src={service.gambar}
+                    src={service.image}
                     alt={service.nama_jasa}
                     className="w-32 h-32 object-cover rounded"
                   />

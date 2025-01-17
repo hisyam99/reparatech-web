@@ -31,7 +31,7 @@ export const useService = () => {
       formDataToSubmit.append('kategori_id', formData.kategori_id.toString())
       formDataToSubmit.append('estimasi', formData.estimasi.toString())
       if (selectedFile) {
-        formDataToSubmit.append('gambar', selectedFile)
+        formDataToSubmit.append('image', selectedFile)
       }
       return serviceApi.create(formDataToSubmit)
     },

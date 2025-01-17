@@ -37,7 +37,7 @@ class ServiceController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             'nama_jasa' => 'required|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'perkiraan_harga' => 'required|numeric',
             'kategori_id' => 'required|exists:categories,id',
             'estimasi' => 'required|integer',
@@ -48,14 +48,21 @@ class ServiceController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        //upload image
-        $image = $request->file('gambar');
-        $image->storeAs('public/services', $image->hashName());
+        //upload image based on environment
+        $image = $request->file('image');
+        if (env('FILESYSTEM_DISK') === 'supabase') {
+            // Supabase storage
+            $path = $image->store('services', 'supabase');
+        } else {
+            // Local storage
+            $image->storeAs('public/services', $image->hashName());
+            $path = $image->hashName();
+        }
 
         //create service
         $service = Service::create([
             'nama_jasa' => $request->nama_jasa,
-            'gambar' => $image->hashName(),
+            'image' => $path,
             'perkiraan_harga' => $request->perkiraan_harga,
             'kategori_id' => $request->kategori_id,
             'estimasi' => $request->estimasi,
@@ -97,7 +104,7 @@ class ServiceController extends Controller
         //define validation rules
         $validator = Validator::make($request->all(), [
             'nama_jasa' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'perkiraan_harga' => 'required|numeric',
             'kategori_id' => 'required|exists:categories,id',
             'estimasi' => 'required|integer',
@@ -117,18 +124,27 @@ class ServiceController extends Controller
         }
 
         //check if image is not empty
-        if ($request->hasFile('gambar')) {
+        if ($request->hasFile('image')) {
             //upload new image
-            $image = $request->file('gambar');
-            $image->storeAs('public/services', $image->hashName());
-
-            //delete old image
-            Storage::delete('public/services/' . basename($service->gambar));
+            $image = $request->file('image');
+            if (env('FILESYSTEM_DISK') === 'supabase') {
+                // Supabase storage
+                $path = $image->store('services', 'supabase');
+                if ($service->image) {
+                    Storage::disk('supabase')->delete($service->image);
+                }
+            } else {
+                // Local storage
+                $image->storeAs('public/services', $image->hashName());
+                //delete old image
+                Storage::delete('public/services/' . basename($service->image));
+                $path = $image->hashName();
+            }
 
             //update service with new image
             $service->update([
                 'nama_jasa' => $request->nama_jasa,
-                'gambar' => $image->hashName(),
+                'image' => $path,
                 'perkiraan_harga' => $request->perkiraan_harga,
                 'kategori_id' => $request->kategori_id,
                 'estimasi' => $request->estimasi,
@@ -163,8 +179,13 @@ class ServiceController extends Controller
             return new ServiceResource(false, 'Data Service Tidak Ditemukan!', null);
         }
 
-        //delete image
-        Storage::delete('public/services/' . basename($service->gambar));
+        if (env('FILESYSTEM_DISK') === 'supabase') {
+            // Delete from Supabase
+            Storage::disk('supabase')->delete($service->image);
+        } else {
+            //delete image
+            Storage::delete('public/services/' . basename($service->image));
+        }
 
         //delete service
         $service->delete();
