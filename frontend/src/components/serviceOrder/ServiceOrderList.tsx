@@ -10,7 +10,7 @@ interface ServiceOrderListProps {
   onDelete?: (id: number) => void
   isLoading: boolean
   isAdmin?: boolean
-  userId?: number // Add userId prop to check if user owns the order
+  userId?: number
 }
 
 export function ServiceOrderList({
@@ -55,8 +55,7 @@ export function ServiceOrderList({
       {orders.map(order => (
         <div key={order.id} className="card bg-base-100 shadow-sm">
           <div className="card-body">
-            <div className="flex justify-between items-start">
-              {/* Order Details Section */}
+            <div className="flex flex-col lg:flex-row justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="font-bold text-lg">
@@ -88,13 +87,12 @@ export function ServiceOrderList({
                   </div>
                 </div>
 
-                {/* User Information for Admin */}
                 {isAdmin && order.user && (
                   <div className="bg-base-200 p-3 rounded-lg mb-4">
                     <h4 className="font-semibold text-sm text-primary mb-2">
                       Customer Information
                     </h4>
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <span className="text-sm text-gray-600">Name:</span>
                         <p className="font-medium">{order.user.name}</p>
@@ -111,7 +109,7 @@ export function ServiceOrderList({
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-x-8 gap-y-2 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <p className="text-sm text-gray-600">Category:</p>
                     <p className="font-medium">
@@ -130,7 +128,6 @@ export function ServiceOrderList({
                   </div>
                 </div>
 
-                {/* Cost Breakdown */}
                 <div className="space-y-1 mb-4">
                   <div className="flex justify-between text-sm">
                     <span>Service Cost:</span>
@@ -146,7 +143,6 @@ export function ServiceOrderList({
                   </div>
                 </div>
 
-                {/* Status Badges */}
                 <div className="flex gap-2 flex-wrap">
                   <span
                     className={`badge ${getStatusColor(order.payment_status)}`}>
@@ -163,7 +159,6 @@ export function ServiceOrderList({
                   )}
                 </div>
 
-                {/* Timestamps */}
                 <div className="mt-2 text-xs text-gray-500">
                   <p>Created: {new Date(order.created_at).toLocaleString()}</p>
                   <p>
@@ -172,9 +167,8 @@ export function ServiceOrderList({
                 </div>
               </div>
 
-              {/* Admin Controls Section */}
               {isAdmin && onUpdateStatus && (
-                <div className="ml-4 space-y-2">
+                <div className="ml-4 mt-4 lg:mt-0 space-y-2">
                   <div className="space-y-1">
                     <p className="text-sm font-medium">Order Status:</p>
                     <select
