@@ -34,10 +34,17 @@
 
         "DB_CONNECTION": "pgsql",
         "DATABASE_URL": "postgresql://postgres.fwkqvcdnjztdvzlbaoph:reparatech@aws-0-us-west-1.pooler.supabase.com:5432/postgres",
-        "sDB_HOST": "ep-autumn-surf-a1mu4c6l.ap-southeast-1.aws.neon.tech",
-        "sDB_PORT": "5432",
-        "sDB_DATABASE": "reparatech-db",
-        "sDB_USERNAME": "reparatech-db_owner",
-        "sDB_PASSWORD": "biGcMP5fA4lw"
+
+        "FILESYSTEM_DISK": "s3",
+        "AWS_ACCESS_KEY_ID": "25468892426439c9cd5921347f3a84e8",
+        "AWS_SECRET_ACCESS_KEY": "a35d184b7a58bbd1aad80b61b8d3dbac39752c90065fefcc5a853abc9be23b3b",
+        "AWS_DEFAULT_REGION": "us-west-1",
+        "AWS_BUCKET": "reparatech-storage",
+        "AWS_ENDPOINT": "https://fwkqvcdnjztdvzlbaoph.supabase.co/storage/v1/s3",
+        "AWS_USE_PATH_STYLE_ENDPOINT": "true",
+
+        "SUPABASE_STORAGE_KEY": "a35d184b7a58bbd1aad80b61b8d3dbac39752c90065fefcc5a853abc9be23b3b",
+        "SUPABASE_STORAGE_BUCKET": "reparatech-storage",
+        "SUPABASE_STORAGE_ENDPOINT": "https://fwkqvcdnjztdvzlbaoph.supabase.co/storage/v1/s3"
     }
 }

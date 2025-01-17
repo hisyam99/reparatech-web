@@ -56,3 +56,5 @@ auth.json
 /.nova
 /.vscode
 /.zed
+
+/backend/vercel.json
