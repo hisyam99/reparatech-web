@@ -36,6 +36,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/service-orders', [ServiceOrderController::class, 'index']);
     Route::get('/service-orders/{id}', [ServiceOrderController::class, 'show']);
     Route::post('/service-orders', [ServiceOrderController::class, 'store']);
+    Route::put('/service-orders/{id}', [ServiceOrderController::class, 'update']);
+    Route::delete('/service-orders/{id}', [ServiceOrderController::class, 'destroy']);
     Route::get('/user/service-orders', [ServiceOrderController::class, 'getUserOrders']);
 });
 
@@ -57,6 +59,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     // service-order
     Route::put('/service-orders/{id}/status', [ServiceOrderController::class, 'updateStatus']);
+    Route::put('/admin/service-orders/{id}', [ServiceOrderController::class, 'adminUpdate']);
+    Route::delete('/admin/service-orders/{id}', [ServiceOrderController::class, 'adminDestroy']);
 });
 
 // Rute tambahan

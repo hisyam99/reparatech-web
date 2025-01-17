@@ -1,3 +1,5 @@
+// /frontend/src/app/(authenticated)/admin/services/orders/page.tsx
+
 'use client'
 
 import { ServiceOrderList } from '@/components/serviceOrder/ServiceOrderList'
@@ -27,7 +29,8 @@ export default function ManageOrderPage() {
     deleteMutation,
     startEdit,
     resetForm,
-  } = useServiceOrder()
+    isAdmin, // Now we can use isAdmin from the hook
+  } = useServiceOrder(true) // Pass true to indicate this is an admin page
 
   const { data: servicesData } = useQuery({
     queryKey: ['services'],
@@ -80,7 +83,6 @@ export default function ManageOrderPage() {
     <div className="p-4 space-y-6">
       <Toaster position="top-right" />
 
-      {/* Edit Form (appears when editing) */}
       {editingOrder && (
         <div className="mb-6">
           <ServiceOrderForm
@@ -95,7 +97,6 @@ export default function ManageOrderPage() {
         </div>
       )}
 
-      {/* Orders List */}
       <div className="card bg-base-200 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Service Orders</h2>
@@ -105,7 +106,7 @@ export default function ManageOrderPage() {
             onEdit={startEdit}
             onDelete={handleDelete}
             isLoading={isLoading}
-            isAdmin={true}
+            isAdmin={isAdmin} // Pass isAdmin from the hook
           />
         </div>
       </div>

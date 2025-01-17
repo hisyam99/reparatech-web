@@ -4,7 +4,7 @@ import { serviceOrderApi } from '@/lib/api/serviceOrder'
 import type { FormData, ServiceOrder } from '@/types/serviceOrder'
 import { toast } from 'sonner'
 
-export const useServiceOrder = () => {
+export const useServiceOrder = (isAdminUser: boolean = false) => {
   const queryClient = useQueryClient()
   const [formData, setFormData] = useState<FormData>({
     service_id: 0,
@@ -12,6 +12,7 @@ export const useServiceOrder = () => {
     device_info: '',
   })
   const [editingOrder, setEditingOrder] = useState<ServiceOrder | null>(null)
+  const [isAdmin] = useState(isAdminUser)
 
   const {
     data: orderData,
@@ -54,6 +55,10 @@ export const useServiceOrder = () => {
       formDataToSubmit.append('service_id', formData.service_id.toString())
       formDataToSubmit.append('delivery_type', formData.delivery_type)
       formDataToSubmit.append('device_info', formData.device_info)
+
+      if (isAdmin) {
+        return serviceOrderApi.adminUpdate(editingOrder.id, formDataToSubmit)
+      }
       return serviceOrderApi.update(editingOrder.id, formDataToSubmit)
     },
     onSuccess: () => {
@@ -87,6 +92,24 @@ export const useServiceOrder = () => {
     },
   })
 
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      if (isAdmin) {
+        return serviceOrderApi.adminDelete(id)
+      }
+      return serviceOrderApi.delete(id)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['service-orders', 'user-orders'],
+      })
+      toast.success('Service order deleted successfully')
+    },
+    onError: error => {
+      toast.error(error.message || 'Something went wrong')
+    },
+  })
+
   const resetForm = () => {
     setFormData({
       service_id: 0,
@@ -106,19 +129,6 @@ export const useServiceOrder = () => {
     })
   }
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: number) => serviceOrderApi.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['service-orders', 'user-orders'],
-      })
-      toast.success('Service order deleted successfully')
-    },
-    onError: error => {
-      toast.error(error.message || 'Something went wrong')
-    },
-  })
-
   return {
     orderData,
     userOrders,
@@ -127,6 +137,7 @@ export const useServiceOrder = () => {
     error,
     formData,
     editingOrder,
+    isAdmin,
     setFormData,
     createMutation,
     updateMutation,
