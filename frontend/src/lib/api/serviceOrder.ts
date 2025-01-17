@@ -32,4 +32,20 @@ export const serviceOrderApi = {
     )
     return response.data
   },
+
+  update: async (id: number, formData: FormData) => {
+    formData.append('_method', 'PUT') // For Laravel backend
+    const response = await customAxios.post<ApiResponse>(
+      `/api/service-orders/${id}`,
+      formData,
+    )
+    return response.data
+  },
+
+  delete: async (id: number) => {
+    const response = await customAxios.delete<ApiResponse>(
+      `/api/service-orders/${id}`,
+    )
+    return response.data
+  },
 }

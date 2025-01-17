@@ -43,7 +43,7 @@ export default function UserDashboard() {
         <Link href="/services/create">
           <div className="card bg-success text-success-content shadow-xl">
             <div className="card-body flex flex-col items-center">
-              <h2 className="text-lg font-bold">Create Order</h2>
+              <h2 className="text-lg font-bold">Create/Edit Order</h2>
               <div className="mt-4 text-4xl">
                 <Plus />
               </div>

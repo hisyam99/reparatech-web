@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { serviceOrderApi } from '@/lib/api/serviceOrder'
-import type { FormData } from '@/types/serviceOrder'
+import type { FormData, ServiceOrder } from '@/types/serviceOrder'
 import { toast } from 'sonner'
 
 export const useServiceOrder = () => {
@@ -11,6 +11,7 @@ export const useServiceOrder = () => {
     delivery_type: 'pickup',
     device_info: '',
   })
+  const [editingOrder, setEditingOrder] = useState<ServiceOrder | null>(null)
 
   const {
     data: orderData,
@@ -46,6 +47,27 @@ export const useServiceOrder = () => {
     },
   })
 
+  const updateMutation = useMutation({
+    mutationFn: async () => {
+      if (!editingOrder) return
+      const formDataToSubmit = new FormData()
+      formDataToSubmit.append('service_id', formData.service_id.toString())
+      formDataToSubmit.append('delivery_type', formData.delivery_type)
+      formDataToSubmit.append('device_info', formData.device_info)
+      return serviceOrderApi.update(editingOrder.id, formDataToSubmit)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['service-orders', 'user-orders'],
+      })
+      toast.success('Service order updated successfully')
+      resetForm()
+    },
+    onError: error => {
+      toast.error(error.message || 'Something went wrong')
+    },
+  })
+
   const updateStatusMutation = useMutation({
     mutationFn: async ({
       id,
@@ -71,7 +93,31 @@ export const useServiceOrder = () => {
       delivery_type: 'pickup',
       device_info: '',
     })
+    setEditingOrder(null)
   }
+
+  const startEdit = (order: ServiceOrder) => {
+    setEditingOrder(order)
+    setFormData({
+      id: order.id,
+      service_id: order.service_id,
+      delivery_type: order.delivery_type,
+      device_info: order.device_info,
+    })
+  }
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => serviceOrderApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['service-orders', 'user-orders'],
+      })
+      toast.success('Service order deleted successfully')
+    },
+    onError: error => {
+      toast.error(error.message || 'Something went wrong')
+    },
+  })
 
   return {
     orderData,
@@ -80,8 +126,13 @@ export const useServiceOrder = () => {
     userOrdersLoading,
     error,
     formData,
+    editingOrder,
     setFormData,
     createMutation,
+    updateMutation,
     updateStatusMutation,
+    startEdit,
+    resetForm,
+    deleteMutation,
   }
 }

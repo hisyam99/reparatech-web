@@ -1,12 +1,12 @@
 'use client'
 
-import { ServiceOrderForm } from '@/components/serviceOrder/ServiceOrderForm'
 import { ServiceOrderList } from '@/components/serviceOrder/ServiceOrderList'
 import { useServiceOrder } from '@/hooks/useServiceOrder'
 import { useQuery } from '@tanstack/react-query'
 import { serviceApi } from '@/lib/api/service'
 import { ChangeEvent, FormEvent } from 'react'
 import { Toaster } from 'sonner'
+import { ServiceOrderForm } from '@/components/serviceOrder/ServiceOrderForm'
 
 interface CustomError extends Error {
   response?: {
@@ -20,15 +20,23 @@ export default function ManageOrderPage() {
     isLoading,
     error,
     formData,
+    editingOrder,
     setFormData,
-    createMutation,
+    updateMutation,
     updateStatusMutation,
+    deleteMutation,
+    startEdit,
+    resetForm,
   } = useServiceOrder()
 
   const { data: servicesData } = useQuery({
     queryKey: ['services'],
     queryFn: serviceApi.getAll,
   })
+
+  const handleDelete = (id: number) => {
+    deleteMutation.mutate(id)
+  }
 
   const customError = error as CustomError
 
@@ -56,7 +64,9 @@ export default function ManageOrderPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    createMutation.mutate()
+    if (editingOrder) {
+      updateMutation.mutate()
+    }
   }
 
   const handleUpdateStatus = (
@@ -70,12 +80,30 @@ export default function ManageOrderPage() {
     <div className="p-4 space-y-6">
       <Toaster position="top-right" />
 
+      {/* Edit Form (appears when editing) */}
+      {editingOrder && (
+        <div className="mb-6">
+          <ServiceOrderForm
+            formData={formData}
+            onSubmit={handleSubmit}
+            onInputChange={handleInputChange}
+            services={servicesData?.data.data ?? []}
+            isLoading={updateMutation.isPending}
+            isEditing={true}
+            onCancel={resetForm}
+          />
+        </div>
+      )}
+
+      {/* Orders List */}
       <div className="card bg-base-200 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Service Orders</h2>
           <ServiceOrderList
             orders={orderData?.data.data ?? []}
             onUpdateStatus={handleUpdateStatus}
+            onEdit={startEdit}
+            onDelete={handleDelete}
             isLoading={isLoading}
             isAdmin={true}
           />

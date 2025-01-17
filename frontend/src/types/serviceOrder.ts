@@ -22,6 +22,12 @@ export interface ServiceOrder {
       name: string
     }
   }
+  user?: {
+    // Add user information
+    id: number
+    name: string
+    email: string
+  }
 }
 
 export interface ApiResponse {
@@ -36,6 +42,7 @@ export interface ApiResponse {
 }
 
 export interface FormData {
+  id?: number
   service_id: number
   delivery_type: 'pickup' | 'delivery'
   device_info: string
