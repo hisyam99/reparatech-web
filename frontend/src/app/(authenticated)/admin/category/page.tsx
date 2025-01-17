@@ -18,10 +18,14 @@ export default function CategoryPage() {
     isLoading,
     error,
     formData,
+    editingCategory,
     setFormData,
     setSelectedFile,
     createMutation,
+    updateMutation,
     deleteMutation,
+    startEdit,
+    resetForm,
   } = useCategory()
 
   const customError = error as CustomError
@@ -56,7 +60,11 @@ export default function CategoryPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    createMutation.mutate()
+    if (editingCategory) {
+      updateMutation.mutate()
+    } else {
+      createMutation.mutate()
+    }
   }
 
   return (
@@ -68,7 +76,9 @@ export default function CategoryPage() {
         onSubmit={handleSubmit}
         onInputChange={handleInputChange}
         onFileChange={handleFileChange}
-        isLoading={createMutation.isPending}
+        isLoading={createMutation.isPending || updateMutation.isPending}
+        isEditing={!!editingCategory}
+        onCancel={resetForm}
       />
 
       <div className="card bg-base-200 shadow-xl">
@@ -77,6 +87,7 @@ export default function CategoryPage() {
           <CategoryList
             categories={categoryData?.data.data ?? []}
             onDelete={id => deleteMutation.mutate(id)}
+            onEdit={startEdit}
             isLoading={isLoading}
           />
         </div>

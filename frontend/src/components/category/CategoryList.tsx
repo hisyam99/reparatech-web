@@ -3,12 +3,14 @@ import { CategoryData } from '@/types/Category'
 interface CategoryListProps {
   categories: CategoryData[]
   onDelete: (id: number) => void
+  onEdit: (category: CategoryData) => void
   isLoading: boolean
 }
 
 export function CategoryList({
   categories,
   onDelete,
+  onEdit,
   isLoading,
 }: CategoryListProps) {
   if (isLoading) {
@@ -26,20 +28,25 @@ export function CategoryList({
           <div className="card-body">
             <div className="flex justify-between items-start">
               <div>
-                {
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-32 h-32 object-cover rounded"
-                  />
-                }
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-32 h-32 object-cover rounded"
+                />
                 <h3 className="font-bold">{category.name}</h3>
               </div>
-              <button
-                className="btn btn-error btn-sm"
-                onClick={() => onDelete(category.id)}>
-                Delete
-              </button>
+              <div className="space-x-2">
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => onEdit(category)}>
+                  Edit
+                </button>
+                <button
+                  className="btn btn-error btn-sm"
+                  onClick={() => onDelete(category.id)}>
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>
