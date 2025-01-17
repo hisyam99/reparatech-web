@@ -1,3 +1,5 @@
+// File 1: /frontend/src/app/(authenticated)/admin/layout.tsx
+
 'use client'
 
 import React, { ReactNode, useState, useEffect } from 'react'
@@ -12,6 +14,7 @@ import {
   MessageSquare,
   Menu,
   X,
+  Folder, // Import icon for categories
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -21,6 +24,11 @@ const navigationItems = [
     path: '/admin',
     label: 'Dashboard',
     icon: Home,
+  },
+  {
+    path: '/admin/category',
+    label: 'Manage Categories',
+    icon: Folder, // Icon for Manage Categories
   },
   {
     path: '/admin/services/manage',

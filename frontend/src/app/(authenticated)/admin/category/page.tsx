@@ -3,7 +3,7 @@
 import { CategoryForm } from '@/components/category/CategoryForm'
 import { CategoryList } from '@/components/category/CategoryList'
 import { useCategory } from '@/hooks/useCategory'
-import { ChangeEvent, FormEvent } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Toaster } from 'sonner'
 
 interface CustomError extends Error {
@@ -28,6 +28,8 @@ export default function CategoryPage() {
     resetForm,
   } = useCategory()
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const customError = error as CustomError
 
   if (customError?.response?.status === 403) {
@@ -48,7 +50,7 @@ export default function CategoryPage() {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'name' ? value : value,
     }))
   }
 
@@ -65,29 +67,77 @@ export default function CategoryPage() {
     } else {
       createMutation.mutate()
     }
+    setIsModalOpen(false) // Close the modal after submission
   }
 
   return (
     <div className="p-4 space-y-6">
       <Toaster position="top-right" />
 
-      <CategoryForm
-        formData={formData}
-        onSubmit={handleSubmit}
-        onInputChange={handleInputChange}
-        onFileChange={handleFileChange}
-        isLoading={createMutation.isPending || updateMutation.isPending}
-        isEditing={!!editingCategory}
-        onCancel={resetForm}
-      />
+      {/* Button to open modal */}
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          setIsModalOpen(true)
+          resetForm() // Reset form for new category
+        }}>
+        Add New Category
+      </button>
 
+      {/* Modal for creating/editing category */}
+      <input
+        type="checkbox"
+        id="category-modal"
+        className="modal-toggle"
+        checked={isModalOpen}
+        onChange={() => {}}
+      />
+      <div className="modal">
+        <div className="modal-box relative">
+          <label
+            htmlFor="category-modal"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+            onClick={() => {
+              setIsModalOpen(false)
+              resetForm() // Reset form when modal is closed
+            }}>
+            ✕
+          </label>
+          <h2 className="text-xl font-bold mb-4">
+            {editingCategory ? 'Edit Category' : 'Create New Category'}
+          </h2>
+
+          {/* CategoryForm Component */}
+          <CategoryForm
+            formData={formData}
+            onSubmit={handleSubmit}
+            onInputChange={handleInputChange}
+            onFileChange={handleFileChange}
+            isLoading={createMutation.isPending || updateMutation.isPending}
+            isEditing={!!editingCategory}
+            onCancel={() => {
+              setIsModalOpen(false)
+              resetForm() // Reset form when canceling
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Category List */}
       <div className="card bg-base-200 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Category List</h2>
           <CategoryList
             categories={categoryData?.data.data ?? []}
             onDelete={id => deleteMutation.mutate(id)}
-            onEdit={startEdit}
+            onEdit={category => {
+              setFormData({
+                name: category.name,
+                // You can add other fields like image if necessary
+              })
+              startEdit(category)
+              setIsModalOpen(true) // Open modal when editing
+            }}
             isLoading={isLoading}
           />
         </div>

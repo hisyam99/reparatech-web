@@ -72,11 +72,12 @@ export function CategoryForm({
                 Cancel Edit
               </button>
             ) : (
-              <Link href="/admin/services/manage">
-                <button type="button" className="btn btn-secondary">
-                  Cancel
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onCancel}>
+                Cancel
+              </button>
             )}
           </div>
         </form>
