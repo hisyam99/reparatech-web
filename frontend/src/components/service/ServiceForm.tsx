@@ -9,6 +9,8 @@ interface ServiceFormProps {
   onInputChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
+  isEditing: boolean
+  onCancel: () => void
 }
 
 export function ServiceForm({
@@ -17,6 +19,8 @@ export function ServiceForm({
   onInputChange,
   onFileChange,
   isLoading,
+  isEditing,
+  onCancel,
 }: ServiceFormProps) {
   const { categoryData, isLoading: categoriesLoading } = useCategory()
   const categories = categoryData?.data.data ?? []
@@ -24,7 +28,9 @@ export function ServiceForm({
   return (
     <div className="card bg-base-200 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">Create New Service</h2>
+        <h2 className="card-title">
+          {isEditing ? 'Edit Service' : 'Create New Service'}
+        </h2>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="form-control">
             <input
@@ -85,15 +91,32 @@ export function ServiceForm({
               className="file-input file-input-bordered w-full"
               onChange={onFileChange}
               accept="image/*"
-              required
+              required={!isEditing}
             />
+            {isEditing && (
+              <label className="label">
+                <span className="label-text-alt">
+                  Leave empty to keep current image
+                </span>
+              </label>
+            )}
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={isLoading || categoriesLoading}>
-            {isLoading ? 'Submitting...' : 'Submit'}
-          </button>
+          <div className="flex space-x-4">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isLoading || categoriesLoading}>
+              {isLoading ? 'Submitting...' : isEditing ? 'Update' : 'Submit'}
+            </button>
+            {isEditing && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onCancel}>
+                Cancel Edit
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </div>

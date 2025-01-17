@@ -3,12 +3,14 @@ import { ServiceData } from '@/types/Service'
 interface ServiceListProps {
   services: ServiceData[]
   onDelete: (id: number) => void
+  onEdit: (service: ServiceData) => void
   isLoading: boolean
 }
 
 export function ServiceList({
   services,
   onDelete,
+  onEdit,
   isLoading,
 }: ServiceListProps) {
   if (isLoading) {
@@ -46,11 +48,18 @@ export function ServiceList({
                   </p>
                 </div>
               </div>
-              <button
-                className="btn btn-error btn-sm"
-                onClick={() => onDelete(service.id)}>
-                Delete
-              </button>
+              <div className="space-x-2">
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => onEdit(service)}>
+                  Edit
+                </button>
+                <button
+                  className="btn btn-error btn-sm"
+                  onClick={() => onDelete(service.id)}>
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>

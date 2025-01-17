@@ -18,10 +18,14 @@ export default function ServicesPage() {
     isLoading,
     error,
     formData,
+    editingService,
     setFormData,
     setSelectedFile,
     createMutation,
+    updateMutation,
     deleteMutation,
+    startEdit,
+    resetForm,
   } = useService()
 
   const customError = error as CustomError
@@ -56,7 +60,11 @@ export default function ServicesPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    createMutation.mutate()
+    if (editingService) {
+      updateMutation.mutate()
+    } else {
+      createMutation.mutate()
+    }
   }
 
   return (
@@ -68,7 +76,9 @@ export default function ServicesPage() {
         onSubmit={handleSubmit}
         onInputChange={handleInputChange}
         onFileChange={handleFileChange}
-        isLoading={createMutation.isPending}
+        isLoading={createMutation.isPending || updateMutation.isPending}
+        isEditing={!!editingService}
+        onCancel={resetForm}
       />
 
       <div className="card bg-base-200 shadow-xl">
@@ -77,6 +87,7 @@ export default function ServicesPage() {
           <ServiceList
             services={serviceData?.data.data ?? []}
             onDelete={id => deleteMutation.mutate(id)}
+            onEdit={startEdit}
             isLoading={isLoading}
           />
         </div>
