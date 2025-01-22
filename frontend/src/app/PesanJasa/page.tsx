@@ -85,16 +85,16 @@ export default function PesanJasaPage() {
         formPayload.append('jenisPengiriman', formData.jenisPengiriman);
         formPayload.append('informasi', formData.informasi);
         formPayload.append('alamat', formData.alamat);
-  
-        // Tidak perlu menambahkan csrfToken secara manual karena axios sudah menangani CSRF token
+
+        // Mengirimkan data ke API
         const response = await axios.post('http://localhost:8000/api/data_pelanggan', formPayload, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'multipart/form-data', // Pastikan header multipart dikirim
           },
         });
-  
+
         if (response.status === 200) {
-          setIsModalOpen(true);
+          setIsModalOpen(true); // Menampilkan modal sukses
         } else {
           alert('Terjadi kesalahan saat mengirim data.');
         }
