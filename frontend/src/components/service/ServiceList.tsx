@@ -1,3 +1,5 @@
+// File 1: /frontend/src/components/service/ServiceList.tsx
+
 import { ServiceData } from '@/types/Service'
 
 interface ServiceListProps {
@@ -24,7 +26,7 @@ export function ServiceList({
   }
 
   return (
-    <div className="space-y-4 md:grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-4">
+    <div className="space-y-4 overflow-auto md:grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       {services.map(service => (
         <div
           key={service.id}
@@ -33,11 +35,14 @@ export function ServiceList({
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1 flex gap-4">
                 {service.image && (
-                  <img
-                    src={service.image}
-                    alt={service.nama_jasa}
-                    className="w-32 h-32 object-cover rounded"
-                  />
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 relative">
+                    <img
+                      src={service.image}
+                      alt={service.nama_jasa}
+                      className="w-full h-full object-cover rounded"
+                      style={{ aspectRatio: '1 / 1' }}
+                    />
+                  </div>
                 )}
                 <div className="flex-1">
                   <h3 className="font-bold text-lg">{service.nama_jasa}</h3>

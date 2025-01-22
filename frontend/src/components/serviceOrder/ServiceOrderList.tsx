@@ -1,3 +1,5 @@
+// File 1: /frontend/src/components/serviceOrder/ServiceOrderList.tsx
+
 import { ServiceOrder } from '@/types/serviceOrder'
 
 interface ServiceOrderListProps {
@@ -51,7 +53,7 @@ export function ServiceOrderList({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 overflow-auto">
       {orders.map(order => (
         <div key={order.id} className="card bg-base-100 shadow-sm">
           <div className="card-body">
@@ -129,17 +131,23 @@ export function ServiceOrderList({
                 </div>
 
                 <div className="space-y-1 mb-4">
-                  <div className="flex justify-between text-sm">
-                    <span>Service Cost:</span>
-                    <span>Rp {order.service_cost.toLocaleString()}</span>
+                  <div className="flex flex-col sm:flex-row justify-between text-xs sm:text-sm md:text-base">
+                    <span className="text-xs sm:text-sm">Service Cost:</span>
+                    <span className="text-xs sm:text-sm md:text-base">
+                      Rp {order.service_cost.toLocaleString()}
+                    </span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Shipping Cost:</span>
-                    <span>Rp {order.shipping_cost.toLocaleString()}</span>
+                  <div className="flex flex-col sm:flex-row justify-between text-xs sm:text-sm md:text-base">
+                    <span className="text-xs sm:text-sm">Shipping Cost:</span>
+                    <span className="text-xs sm:text-sm md:text-base">
+                      Rp {order.shipping_cost.toLocaleString()}
+                    </span>
                   </div>
-                  <div className="flex justify-between font-bold">
-                    <span>Total Amount:</span>
-                    <span>Rp {order.total_amount.toLocaleString()}</span>
+                  <div className="flex flex-col sm:flex-row justify-between text-xs sm:text-sm md:text-base font-bold">
+                    <span className="text-xs sm:text-sm">Total Amount:</span>
+                    <span className="text-xs sm:text-sm md:text-base">
+                      Rp {order.total_amount.toLocaleString()}
+                    </span>
                   </div>
                 </div>
 

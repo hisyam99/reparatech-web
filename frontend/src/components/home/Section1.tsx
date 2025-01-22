@@ -18,7 +18,7 @@ const Section1 = () => {
         </p>
         <div className="flex gap-4">
           <Link
-            href="/services"
+            href="/login"
             className="px-6 py-2 bg-accent text-accent-content font-bold rounded hover:bg-accent-focus">
             Temukan Layanan Kami
           </Link>

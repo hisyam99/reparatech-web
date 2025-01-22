@@ -1,3 +1,5 @@
+// File 1: /frontend/src/components/category/CategoryList.tsx
+
 import { CategoryData } from '@/types/Category'
 
 interface CategoryListProps {
@@ -22,7 +24,7 @@ export function CategoryList({
   }
 
   return (
-    <div className="space-y-4 md:grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="space-y-4 overflow-auto md:grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       {categories.map(category => (
         <div
           key={category.id}
@@ -30,11 +32,14 @@ export function CategoryList({
           <div className="card-body flex-1 flex flex-col justify-between">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
               <div className="flex-1 flex gap-4">
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-32 h-32 object-cover rounded"
-                />
+                <div className="w-16 h-16 sm:w-24 sm:h-24 relative">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover rounded"
+                    style={{ aspectRatio: '1 / 1' }}
+                  />
+                </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-lg">{category.name}</h3>
                 </div>

@@ -1,5 +1,3 @@
-// File: /frontend/src/components/home/Section3.tsx
-
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -15,27 +13,34 @@ const fetcher = (url: string) =>
 
 const Section3 = () => {
   const [categories, setCategories] = useState<string[]>([])
-
-  // Fetch all services data to extract categories
   const { data, error } = useSWR<ApiResponse>('/api/services', fetcher)
 
   useEffect(() => {
     if (data?.data?.data) {
-      // Initialize categories array
-      const categoryList: string[] = []
-
-      // Loop through all services and add categories
-      data.data.data.forEach((service: ServiceData) => {
-        if (!categoryList.includes(service.category.name)) {
-          categoryList.push(service.category.name)
-        }
-      })
-
+      const categoryList = Array.from(
+        new Set(data.data.data.map(service => service.category.name)),
+      )
       setCategories(categoryList)
     }
   }, [data])
 
-  // Dummy categories for error state
+  const getCategoryImage = (category: string): string => {
+    const serviceWithImage = data?.data?.data.find(
+      (service: ServiceData) =>
+        service.category.name === category &&
+        service.image &&
+        service.image.trim() !== '',
+    )
+
+    if (serviceWithImage?.image) {
+      // Assuming the API returns a full URL or path to the image
+      return serviceWithImage.image
+    }
+
+    // Fallback to local assets if no API image is available
+    return `/assets/${category.toLowerCase()}.png`
+  }
+
   const dummyCategories = ['Laptop', 'Smartphone', 'Tablet']
 
   if (error) {
@@ -49,17 +54,20 @@ const Section3 = () => {
           semua layanan kami.
         </p>
         <div className="flex justify-center flex-wrap gap-6">
-          {/* Dummy cards */}
           {dummyCategories.map((category, index) => (
             <div
               key={index}
               className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
               <div className="flex justify-center mb-8 relative w-24 h-24">
                 <Image
-                  src={`/assets/${category.toLowerCase()}.png`} // Placeholder for real category images
+                  src={`/assets/${category.toLowerCase()}.png`}
                   alt={category}
                   layout="fill"
                   objectFit="contain"
+                  onError={(e: any) => {
+                    e.target.src = '/assets/placeholder.png'
+                  }}
+                  unoptimized
                 />
               </div>
               <h3 className="text-lg font-bold mb-6 text-base-content">
@@ -94,10 +102,14 @@ const Section3 = () => {
             className="bg-base-100 border rounded-lg shadow-md p-6 max-w-[250px] text-left flex flex-col justify-between">
             <div className="flex justify-center mb-8 relative w-24 h-24">
               <Image
-                src={`/assets/${category.toLowerCase()}.png`}
+                src={getCategoryImage(category)}
                 alt={category}
                 layout="fill"
                 objectFit="contain"
+                onError={(e: any) => {
+                  e.target.src = '/assets/placeholder.png'
+                }}
+                unoptimized
               />
             </div>
             <h3 className="text-lg font-bold mb-6 text-base-content">
